@@ -53,7 +53,7 @@ body {
 }
 
 .logo img {
-    height: 50px;
+    height: 100px;  /* 2x bigger: 50px → 100px */
     width: auto;
 }
 
@@ -66,8 +66,9 @@ body {
 
 .nav-menu a {
     text-decoration: none;
-    color: #333;
-    font-weight: 500;
+    color: #8a728c;  /* Your purple color */
+    font-weight: bold;  /* Make it bold */
+    font-size: 18px;  /* Bigger text */
     transition: color 0.3s;
 }
 
