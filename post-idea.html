@@ -3,180 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Your Business Idea - BizzStop</title>
+    <title>Ad Details - BizzStop</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .post-idea-container {
-            max-width: 700px;
-            margin: 80px auto;
-            padding: 40px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        .details-container {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 20px;
         }
-        .post-idea-container h2 {
-            color: #8a728c;
+        .details-hero {
+            background: linear-gradient(135deg, #8a728c 0%, #6f5a70 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .details-hero h1 {
+            font-size: 32px;
             margin-bottom: 10px;
         }
-        .post-idea-container .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 25px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #333;
-        }
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-            transition: border-color 0.3s;
-        }
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #8a728c;
-        }
-        .form-group textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-        .form-row {
+        .details-content {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+        .main-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
             gap: 20px;
         }
-        
-        /* Image Upload Styles */
-        .image-upload-section {
-            border: 2px dashed #8a728c;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            background: #f8f7f9;
-            cursor: pointer;
-            transition: all 0.3s;
+        .info-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .image-upload-section:hover {
-            background: #f0eff1;
-            border-color: #6f5a70;
-        }
-        .image-upload-section input[type="file"] {
-            display: none;
-        }
-        .upload-icon {
-            font-size: 48px;
+        .info-card h3 {
             color: #8a728c;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 18px;
         }
-        .upload-text {
+        .info-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        .info-label {
+            font-weight: 600;
             color: #666;
             margin-bottom: 5px;
         }
-        .upload-limit {
-            font-size: 12px;
-            color: #999;
-        }
-        .image-previews {
+        .image-gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 15px;
-            margin-top: 20px;
+            margin-bottom: 25px;
         }
-        .image-preview-item {
-            position: relative;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .image-preview-item img {
+        .gallery-image {
             width: 100%;
             height: 150px;
             object-fit: cover;
-            display: block;
-        }
-        .remove-image-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: rgba(220, 53, 69, 0.9);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 18px;
+            border-radius: 8px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
+            transition: transform 0.3s;
         }
-        .remove-image-btn:hover {
-            background: rgba(200, 35, 51, 1);
+        .gallery-image:hover {
+            transform: scale(1.05);
         }
-        
-        .submit-btn {
+        .main-image {
             width: 100%;
-            padding: 14px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        .section p {
+            color: #555;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+        .category-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            background: #8a728c;
+            color: white;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+        }
+        .location-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            font-size: 16px;
+        }
+        .contact-section {
+            background: #f8f7f9;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .contact-hidden p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        .reveal-btn {
             background: #8a728c;
             color: white;
             border: none;
+            padding: 12px 30px;
             border-radius: 6px;
-            font-size: 18px;
             font-weight: bold;
+            font-size: 16px;
             cursor: pointer;
             transition: background 0.3s;
         }
-        .submit-btn:hover {
+        .reveal-btn:hover {
             background: #6f5a70;
         }
-        .submit-btn:disabled {
+        .reveal-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
-        .message {
-            padding: 12px;
-            margin-bottom: 20px;
+        .contact-revealed {
+            text-align: left;
+        }
+        .contact-revealed .info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 0;
+        }
+        .no-reveals {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        .back-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #f0f0f0;
+            color: #333;
+            text-decoration: none;
             border-radius: 6px;
-            display: none;
+            margin-bottom: 20px;
+            transition: background 0.3s;
         }
-        .message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .message.show {
-            display: block;
-        }
-        .char-count {
-            text-align: right;
-            font-size: 12px;
-            color: #999;
-            margin-top: 5px;
+        .back-btn:hover {
+            background: #e0e0e0;
         }
         @media (max-width: 768px) {
-            .form-row {
+            .details-content {
                 grid-template-columns: 1fr;
             }
-            .image-previews {
-                grid-template-columns: repeat(2, 1fr);
+            .main-image {
+                height: 250px;
             }
         }
     </style>
@@ -206,289 +206,264 @@
         </div>
     </nav>
 
-    <div class="post-idea-container">
-        <h2>Post Your Business Idea</h2>
-        <p class="subtitle">Share your concept and find hands-on partners to build together</p>
+    <div class="details-container">
+        <a href="browse-opportunities.html" class="back-btn">← Back to Opportunities</a>
+        
+        <div class="details-hero">
+            <h1 id="ideaTitle">Loading...</h1>
+        </div>
 
-        <div id="message" class="message"></div>
-
-        <form id="postIdeaForm">
-            <div class="form-group">
-                <label for="businessTitle">Business Title *</label>
-                <input type="text" id="businessTitle" required placeholder="e.g., Mobile Coffee Cart Service">
-            </div>
-
-            <div class="form-group">
-                <label for="category">Category *</label>
-                <select id="category" required>
-                    <option value="">Select category</option>
-                    <option value="Food & Beverage">Food & Beverage</option>
-                    <option value="Technology">Technology</option>
-                    <option value="E-commerce">E-commerce</option>
-                    <option value="Services">Services</option>
-                    <option value="Retail">Retail</option>
-                    <option value="Health & Fitness">Health & Fitness</option>
-                    <option value="Education">Education</option>
-                    <option value="Real Estate">Real Estate</option>
-                    <option value="Manufacturing">Manufacturing</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Business Description *</label>
-                <textarea id="description" required placeholder="Describe your business idea, target market, and what makes it unique..." maxlength="1000"></textarea>
-                <div class="char-count"><span id="descCharCount">0</span>/1000</div>
-            </div>
-
-            <div class="form-group">
-                <label for="lookingFor">What I'm Looking For *</label>
-                <textarea id="lookingFor" required placeholder="Describe the ideal partner skills, experience, or resources you're seeking..." maxlength="500"></textarea>
-                <div class="char-count"><span id="lookingCharCount">0</span>/500</div>
-            </div>
-
-            <!-- Image Upload Section -->
-            <div class="form-group">
-                <label>Business Images *</label>
-                <div class="image-upload-section" onclick="document.getElementById('imageUpload').click()">
-                    <div class="upload-icon">📷</div>
-                    <div class="upload-text">Click to upload images</div>
-                    <div class="upload-limit">At least 1 image required • Up to 5 images • Max 5MB each • JPG, PNG</div>
-                    <input type="file" id="imageUpload" accept="image/jpeg,image/png,image/jpg" multiple>
-                </div>
-                <div id="imagePreviews" class="image-previews"></div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="location">Location *</label>
-                    <input type="text" id="location" required placeholder="e.g., Austin, TX">
+        <div class="details-content">
+            <div class="main-content">
+                <div id="imageSection"></div>
+                
+                <div class="section">
+                    <h2>Details</h2>
+                    <p id="ideaDescription"></p>
                 </div>
 
-                <div class="form-group">
-                    <label for="contactPhone">Contact Phone *</label>
-                    <input type="tel" id="contactPhone" required placeholder="e.g., +1-555-123-4567">
+                <div class="section">
+                    <h2>What I'm Looking For</h2>
+                    <p id="ideaLookingFor"></p>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="contactEmail">Contact Email *</label>
-                <input type="email" id="contactEmail" required placeholder="your@email.com">
-            </div>
+            <div class="sidebar">
+                <div class="info-card">
+                    <h3>Ad Details</h3>
+                    <div class="info-item">
+                        <div class="info-label">Category</div>
+                        <span id="ideaCategory"></span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Location</div>
+                        <span id="ideaLocation"></span>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Posted</div>
+                        <span id="ideaPosted"></span>
+                    </div>
+                </div>
 
-            <button type="submit" class="submit-btn">Post Business Idea</button>
-        </form>
+                <div class="info-card">
+                    <h3>Contact</h3>
+                    <div id="contactSection" class="contact-section"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script>
-        let selectedImages = [];
-        const MAX_IMAGES = 5;
-        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+        let currentIdea = null;
+        let currentUser = null;
+        let userProfile = null;
 
-        // Character counters
-        document.getElementById('description').addEventListener('input', function() {
-            document.getElementById('descCharCount').textContent = this.value.length;
-        });
+        // Get idea ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const ideaId = urlParams.get('id');
 
-        document.getElementById('lookingFor').addEventListener('input', function() {
-            document.getElementById('lookingCharCount').textContent = this.value.length;
-        });
+        if (!ideaId) {
+            window.location.href = 'browse-opportunities.html';
+        }
 
-        // Image Upload Handler
-        document.getElementById('imageUpload').addEventListener('change', function(e) {
-            const files = Array.from(e.target.files);
+        // Load idea details
+        async function loadIdeaDetails() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('business_ideas')
+                    .select('*')
+                    .eq('id', ideaId)
+                    .single();
+
+                if (error) throw error;
+
+                currentIdea = data;
+                displayIdeaDetails(data);
+            } catch (error) {
+                console.error('Error loading idea:', error);
+                alert('Error loading idea details');
+                window.location.href = 'browse-opportunities.html';
+            }
+        }
+
+        // Display idea details
+        function displayIdeaDetails(idea) {
+            document.getElementById('ideaTitle').textContent = idea.title;
+            document.getElementById('ideaDescription').textContent = idea.description;
+            document.getElementById('ideaLookingFor').textContent = idea.looking_for;
+            document.getElementById('ideaCategory').innerHTML = `<span class="category-badge">${idea.category}</span>`;
+            document.getElementById('ideaLocation').innerHTML = `<span class="location-badge">📍 ${idea.location}</span>`;
             
-            // Check total number of images
-            if (selectedImages.length + files.length > MAX_IMAGES) {
-                alert(`You can only upload up to ${MAX_IMAGES} images`);
+            // Format date
+            const posted = new Date(idea.created_at).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('ideaPosted').textContent = posted;
+
+            // Display images
+            displayImages(idea.image_urls);
+
+            // Check if contact already revealed
+            checkContactRevealed(idea.id);
+        }
+
+        // Display images
+        function displayImages(imageUrls) {
+            const imageSection = document.getElementById('imageSection');
+            
+            if (!imageUrls || imageUrls.length === 0) {
+                imageSection.innerHTML = '<img src="https://via.placeholder.com/800x400?text=No+Image" class="main-image">';
                 return;
             }
 
-            files.forEach(file => {
-                // Validate file type
-                if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
-                    alert(`${file.name} is not a valid image format. Please use JPG or PNG.`);
-                    return;
-                }
-
-                // Validate file size
-                if (file.size > MAX_FILE_SIZE) {
-                    alert(`${file.name} is too large. Maximum file size is 5MB.`);
-                    return;
-                }
-
-                // Add to selected images
-                selectedImages.push(file);
-            });
-
-            displayImagePreviews();
-            e.target.value = ''; // Reset input
-        });
-
-        // Display image previews
-        function displayImagePreviews() {
-            const container = document.getElementById('imagePreviews');
-            container.innerHTML = '';
-
-            selectedImages.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const previewItem = document.createElement('div');
-                    previewItem.className = 'image-preview-item';
-                    previewItem.innerHTML = `
-                        <img src="${e.target.result}" alt="Preview ${index + 1}">
-                        <button type="button" class="remove-image-btn" onclick="removeImage(${index})">×</button>
-                    `;
-                    container.appendChild(previewItem);
-                };
-                reader.readAsDataURL(file);
-            });
+            if (imageUrls.length === 1) {
+                imageSection.innerHTML = `<img src="${imageUrls[0]}" class="main-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+Not+Found'">`;
+            } else {
+                const mainImage = imageUrls[0];
+                const thumbnails = imageUrls.slice(1);
+                
+                imageSection.innerHTML = `
+                    <img src="${mainImage}" id="mainImage" class="main-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+Not+Found'">
+                    <div class="image-gallery">
+                        ${imageUrls.map((url, index) => `
+                            <img src="${url}" class="gallery-image" onclick="changeMainImage('${url}')" onerror="this.src='https://via.placeholder.com/150?text=Error'">
+                        `).join('')}
+                    </div>
+                `;
+            }
         }
 
-        // Remove image
-        window.removeImage = function(index) {
-            selectedImages.splice(index, 1);
-            displayImagePreviews();
+        // Change main image
+        window.changeMainImage = function(url) {
+            document.getElementById('mainImage').src = url;
         };
 
-        // Show message
-        function showMessage(text, type = 'success') {
-            const message = document.getElementById('message');
-            message.textContent = text;
-            message.className = `message ${type} show`;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        // Check if contact already revealed
+        async function checkContactRevealed(ideaId) {
+            const contactSection = document.getElementById('contactSection');
 
-        // Upload images to Supabase Storage
-        async function uploadImages(userId, ideaId) {
-            const imageUrls = [];
-
-            for (let i = 0; i < selectedImages.length; i++) {
-                const file = selectedImages[i];
-                const fileExt = file.name.split('.').pop();
-                const fileName = `${userId}/${ideaId}/${Date.now()}_${i}.${fileExt}`;
-
-                try {
-                    const { data, error } = await supabaseClient.storage
-                        .from('idea-images')
-                        .upload(fileName, file);
-
-                    if (error) throw error;
-
-                    // Get public URL
-                    const { data: urlData } = supabaseClient.storage
-                        .from('idea-images')
-                        .getPublicUrl(fileName);
-
-                    imageUrls.push(urlData.publicUrl);
-                } catch (error) {
-                    console.error('Error uploading image:', error);
-                    // Continue with other images even if one fails
-                }
-            }
-
-            return imageUrls;
-        }
-
-        // Post Idea Form Handler
-        document.getElementById('postIdeaForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            // Check if at least 1 image is uploaded
-            if (selectedImages.length === 0) {
-                showMessage('Please upload at least 1 image of your business idea.', 'error');
+            if (!currentUser) {
+                contactSection.innerHTML = `
+                    <div class="contact-hidden">
+                        <p>📞 Contact information is hidden</p>
+                        <p>Please <a href="sign-uplogin.html">login</a> to reveal contact details</p>
+                    </div>
+                `;
                 return;
             }
-            
-            // Check if user is logged in
-            const user = await checkAuth();
-            if (!user) {
-                showMessage('Please login to post a business idea.', 'error');
-                setTimeout(() => {
-                    window.location.href = 'sign-uplogin.html';
-                }, 2000);
-                return;
-            }
-
-            const btn = e.target.querySelector('.submit-btn');
-            btn.disabled = true;
-            btn.textContent = selectedImages.length > 0 ? 'Uploading images...' : 'Posting...';
-
-            const formData = {
-                user_id: user.id,
-                title: document.getElementById('businessTitle').value,
-                category: document.getElementById('category').value,
-                investment_needed: 'Not specified',
-                description: document.getElementById('description').value,
-                looking_for: document.getElementById('lookingFor').value,
-                location: document.getElementById('location').value,
-                contact_phone: document.getElementById('contactPhone').value,
-                contact_email: document.getElementById('contactEmail').value,
-                created_at: new Date().toISOString(),
-                status: 'active'
-            };
 
             try {
-                // Insert the business idea first
-                const { data: ideaData, error: ideaError } = await supabaseClient
-                    .from('business_ideas')
-                    .insert([formData])
-                    .select();
+                const { data, error } = await supabaseClient
+                    .from('contact_reveals')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .eq('business_idea_id', ideaId)
+                    .single();
 
-                if (ideaError) throw ideaError;
+                if (data) {
+                    // Already revealed
+                    displayRevealedContact();
+                } else {
+                    // Not revealed yet
+                    displayHiddenContact();
+                }
+            } catch (error) {
+                // Not revealed
+                displayHiddenContact();
+            }
+        }
 
-                const ideaId = ideaData[0].id;
+        // Display hidden contact
+        function displayHiddenContact() {
+            const contactSection = document.getElementById('contactSection');
+            contactSection.innerHTML = `
+                <div class="contact-hidden">
+                    <p>📞 Contact information is hidden</p>
+                    <button class="reveal-btn" onclick="revealContact()">
+                        Reveal Contact (1 Credit)
+                    </button>
+                    <p class="no-reveals" id="noRevealsMsg" style="display: none;">
+                        You need more reveals. <a href="subscription-plans.html">Buy more</a>
+                    </p>
+                </div>
+            `;
+        }
 
-                // Upload images if any
-                if (selectedImages.length > 0) {
-                    btn.textContent = 'Uploading images...';
-                    const imageUrls = await uploadImages(user.id, ideaId);
+        // Display revealed contact
+        function displayRevealedContact() {
+            const contactSection = document.getElementById('contactSection');
+            contactSection.innerHTML = `
+                <div class="contact-revealed">
+                    <div class="info-item">
+                        <strong>📧 Email:</strong>
+                        <a href="mailto:${currentIdea.contact_email}">${currentIdea.contact_email}</a>
+                    </div>
+                    <div class="info-item">
+                        <strong>📞 Phone:</strong>
+                        <a href="tel:${currentIdea.contact_phone}">${currentIdea.contact_phone}</a>
+                    </div>
+                </div>
+            `;
+        }
 
-                    // Update the idea with image URLs
-                    if (imageUrls.length > 0) {
-                        await supabaseClient
-                            .from('business_ideas')
-                            .update({ image_urls: imageUrls })
-                            .eq('id', ideaId);
-                    }
+        // Reveal contact
+        window.revealContact = async function() {
+            if (!currentUser) {
+                alert('Please login to reveal contact information');
+                window.location.href = 'sign-uplogin.html';
+                return;
+            }
+
+            if (!userProfile || userProfile.reveals_remaining <= 0) {
+                document.getElementById('noRevealsMsg').style.display = 'block';
+                return;
+            }
+
+            try {
+                // Deduct reveal
+                const newReveals = userProfile.reveals_remaining - 1;
+                const updated = await updateReveals(currentUser.id, newReveals);
+                
+                if (!updated) {
+                    throw new Error('Failed to update reveals');
                 }
 
-                showMessage('Business idea posted successfully!', 'success');
-                
-                // Reset form
-                e.target.reset();
-                selectedImages = [];
-                displayImagePreviews();
-                document.getElementById('descCharCount').textContent = '0';
-                document.getElementById('lookingCharCount').textContent = '0';
+                // Update local profile
+                userProfile.reveals_remaining = newReveals;
 
-                // Redirect to browse page after 2 seconds
-                setTimeout(() => {
-                    window.location.href = 'browse-opportunities.html';
-                }, 2000);
+                // Log the reveal
+                await supabaseClient
+                    .from('contact_reveals')
+                    .insert([{
+                        user_id: currentUser.id,
+                        business_idea_id: ideaId,
+                        revealed_at: new Date().toISOString()
+                    }]);
+
+                // Display contact
+                displayRevealedContact();
+
+                // Reload user status
+                loadUserStatus();
 
             } catch (error) {
-                console.error('Error posting idea:', error);
-                showMessage('Error posting idea: ' + error.message, 'error');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Post Business Idea';
+                console.error('Error revealing contact:', error);
+                alert('Error revealing contact. Please try again.');
             }
-        });
+        };
 
-        // Pre-fill email if user is logged in
+        // Initialize page
         (async function() {
-            const user = await checkAuth();
-            if (user) {
-                const profile = await getUserProfile(user.id);
-                if (profile && profile.email) {
-                    document.getElementById('contactEmail').value = profile.email;
-                }
+            currentUser = await checkAuth();
+            if (currentUser) {
+                userProfile = await getUserProfile(currentUser.id);
             }
+            await loadIdeaDetails();
         })();
     </script>
 </body>
 </html>
-
