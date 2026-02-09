@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizzstop - Get Started</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .get-started-section {
+            padding: 80px 20px;
+            background: #f8f7f9;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            color: #8a728c;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .section-subtitle {
+            color: #555;
+            font-size: 1.3rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2.5rem;
+        }
+
+        .card {
+            flex: 1;
+            min-width: 320px;
+            max-width: 420px;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(138, 114, 140, 0.18);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 32px rgba(138, 114, 140, 0.25);
+        }
+
+        .card-header {
+            background: #8a728c;
+            padding: 50px 30px;
+            text-align: center;
+        }
+
+        .card-header img {
+            max-width: 110px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .card-body {
+            padding: 35px 30px;
+        }
+
+        .card-title {
+            color: #8a728c;
+            margin: 0 0 1rem;
+            font-size: 1.6rem;
+        }
+
+        .card-text {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1.8rem;
+            font-size: 1.05rem;
+        }
+
+        .btn {
+            background: #8a728c;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #6d5a70;
+        }
+    </style>
+</head>
+<body>
+    <section class="get-started-section">
+        <div class="container">
+            <h1 class="section-title">Get Started</h1>
+            <p class="section-subtitle">Post your idea and find a hands-on partner.</p>
+
+            <div class="cards-grid">
+                <!-- Post Idea Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <img src="images/web2.jpg" alt="Idea Lightbulb Icon">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Post Idea</h3>
+                        <p class="card-text">
+                            Share your business idea and partner needs.<br>
+                            Post your ad on the marketplace for people to find and contact you.
+                        </p>
+                        <a href="post-idea.html" class="btn">Post Idea</a>
+                    </div>
+                </div>
+
+                <!-- Browse Opportunities Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <img src="images/web1.jpg" alt="Handshake Partner Icon">
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">Find Businesses to Co-Found/Partner with</h3>
+                        <p class="card-text">
+                            Browse existing business ideas posted by people.<br>
+                            Find opportunities to partner or co-found.
+                        </p>
+                        <a href="browse-opportunities.html" class="btn">Browse Opportunities</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
