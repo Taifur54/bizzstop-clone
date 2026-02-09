@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Your Business Idea - BizzStop</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .post-idea-container {
+            max-width: 700px;
+            margin: 80px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .post-idea-container h2 {
+            color: #8a728c;
+            margin-bottom: 10px;
+        }
+        .post-idea-container .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8a728c;
+        }
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #8a728c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover {
+            background: #6f5a70;
+        }
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .message {
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            display: none;
+        }
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .message.show {
+            display: block;
+        }
+        .char-count {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- User Status Bar -->
+    <div id="user-status-bar" style="background: #f8f9fa; padding: 10px 30px; display: flex; justify-content: flex-end; align-items: center; gap: 15px; font-family: Arial, sans-serif; font-size: 14px; border-bottom: 1px solid #dee2e6;">
+        <div id="user-status-content"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop,q=95/emBvaPk2upU9HDdb/bizzstop-4-RuK6rZqCLWHaMwpy.jpg" alt="BizzStop logo">
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/post-idea.html">Post idea</a></li>
+                <li><a href="/browse-opportunities.html">Browse opportunities</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/subscription-plans.html">Subscription Plans</a></li>
+                <li><a href="/sign-uplogin.html">Sign-up/Login</a></li>
+                <li><a href="/profile.html">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="post-idea-container">
+        <h2>Post Your Business Idea</h2>
+        <p class="subtitle">Share your concept and find hands-on partners to build together</p>
+
+        <div id="message" class="message"></div>
+
+        <form id="postIdeaForm">
+            <div class="form-group">
+                <label for="businessTitle">Business Title *</label>
+                <input type="text" id="businessTitle" required placeholder="e.g., Mobile Coffee Cart Service">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="category">Category *</label>
+                    <select id="category" required>
+                        <option value="">Select category</option>
+                        <option value="Food & Beverage">Food & Beverage</option>
+                        <option value="Technology">Technology</option>
+                        <option value="E-commerce">E-commerce</option>
+                        <option value="Services">Services</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Health & Fitness">Health & Fitness</option>
+                        <option value="Education">Education</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="investmentNeeded">Investment Needed *</label>
+                    <select id="investmentNeeded" required>
+                        <option value="">Select range</option>
+                        <option value="< $5,000">< $5,000</option>
+                        <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                        <option value="$10,000 - $25,000">$10,000 - $25,000</option>
+                        <option value="$25,000 - $50,000">$25,000 - $50,000</option>
+                        <option value="$50,000 - $100,000">$50,000 - $100,000</option>
+                        <option value="$100,000+">$100,000+</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Business Description *</label>
+                <textarea id="description" required placeholder="Describe your business idea, target market, and what makes it unique..." maxlength="1000"></textarea>
+                <div class="char-count"><span id="descCharCount">0</span>/1000</div>
+            </div>
+
+            <div class="form-group">
+                <label for="lookingFor">What I'm Looking For *</label>
+                <textarea id="lookingFor" required placeholder="Describe the ideal partner skills, experience, or resources you're seeking..." maxlength="500"></textarea>
+                <div class="char-count"><span id="lookingCharCount">0</span>/500</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="location">Location *</label>
+                    <input type="text" id="location" required placeholder="e.g., Austin, TX">
+                </div>
+
+                <div class="form-group">
+                    <label for="contactPhone">Contact Phone *</label>
+                    <input type="tel" id="contactPhone" required placeholder="e.g., +1-555-123-4567">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="contactEmail">Contact Email *</label>
+                <input type="email" id="contactEmail" required placeholder="your@email.com">
+            </div>
+
+            <button type="submit" class="submit-btn">Post Business Idea</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Character counters
+        document.getElementById('description').addEventListener('input', function() {
+            document.getElementById('descCharCount').textContent = this.value.length;
+        });
+
+        document.getElementById('lookingFor').addEventListener('input', function() {
+            document.getElementById('lookingCharCount').textContent = this.value.length;
+        });
+
+        // Show message
+        function showMessage(text, type = 'success') {
+            const message = document.getElementById('message');
+            message.textContent = text;
+            message.className = `message ${type} show`;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Post Idea Form Handler
+        document.getElementById('postIdeaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Check if user is logged in
+            const user = await checkAuth();
+            if (!user) {
+                showMessage('Please login to post a business idea.', 'error');
+                setTimeout(() => {
+                    window.location.href = '/sign-uplogin.html';
+                }, 2000);
+                return;
+            }
+
+            const btn = e.target.querySelector('.submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Posting...';
+
+            const formData = {
+                user_id: user.id,
+                title: document.getElementById('businessTitle').value,
+                category: document.getElementById('category').value,
+                investment_needed: document.getElementById('investmentNeeded').value,
+                description: document.getElementById('description').value,
+                looking_for: document.getElementById('lookingFor').value,
+                location: document.getElementById('location').value,
+                contact_phone: document.getElementById('contactPhone').value,
+                contact_email: document.getElementById('contactEmail').value,
+                created_at: new Date().toISOString(),
+                status: 'active'
+            };
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('business_ideas')
+                    .insert([formData]);
+
+                if (error) throw error;
+
+                showMessage('Business idea posted successfully!', 'success');
+                
+                // Reset form
+                e.target.reset();
+                document.getElementById('descCharCount').textContent = '0';
+                document.getElementById('lookingCharCount').textContent = '0';
+
+                // Redirect to browse page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = '/browse-opportunities.html';
+                }, 2000);
+
+            } catch (error) {
+                console.error('Error posting idea:', error);
+                showMessage('Error posting idea: ' + error.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Post Business Idea';
+            }
+        });
+
+        // Pre-fill email if user is logged in
+        (async function() {
+            const user = await checkAuth();
+            if (user) {
+                const profile = await getUserProfile(user.id);
+                if (profile && profile.email) {
+                    document.getElementById('contactEmail').value = profile.email;
+                }
+            }
+        })();
+    </script>
+</body>
+</html>

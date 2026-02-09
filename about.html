@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BizzStop</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, #8a728c 0%, #6f5a70 100%);
+            color: white;
+            padding: 100px 20px 80px;
+            text-align: center;
+        }
+        .about-hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .about-hero p {
+            font-size: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.95;
+        }
+        .about-section {
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .about-section h2 {
+            color: #8a728c;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .about-section p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .value-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .value-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        .value-card h3 {
+            color: #8a728c;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 768px) {
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- User Status Bar -->
+    <div id="user-status-bar" style="background: #f8f9fa; padding: 10px 30px; display: flex; justify-content: flex-end; align-items: center; gap: 15px; font-family: Arial, sans-serif; font-size: 14px; border-bottom: 1px solid #dee2e6;">
+        <div id="user-status-content"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop,q=95/emBvaPk2upU9HDdb/bizzstop-4-RuK6rZqCLWHaMwpy.jpg" alt="BizzStop logo">
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/post-idea.html">Post idea</a></li>
+                <li><a href="/browse-opportunities.html">Browse opportunities</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/subscription-plans.html">Subscription Plans</a></li>
+                <li><a href="/sign-uplogin.html">Sign-up/Login</a></li>
+                <li><a href="/profile.html">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="about-hero">
+        <h1>About BizzStop</h1>
+        <p>Connecting driven entrepreneurs with hands-on partners to build successful businesses together</p>
+    </div>
+
+    <div class="about-section">
+        <h2>Our Mission</h2>
+        <p>At BizzStop, we believe that the best businesses are built through genuine partnerships. We're not just another platform for passive investors – we connect people who are ready to roll up their sleeves and build together.</p>
+        <p>Whether you have a brilliant business idea and need a partner, or you're looking to join an existing venture where you can make a real impact, BizzStop is your starting point.</p>
+
+        <h2 style="margin-top: 60px;">Our Story</h2>
+        <p>BizzStop was founded by entrepreneurs who experienced firsthand the challenges of finding the right business partner. Too often, people with great ideas struggle to find partners who are truly committed, while skilled individuals looking to join ventures can't find opportunities that match their passion.</p>
+        <p>We created BizzStop to solve this problem – a dedicated platform where active partnerships are formed, not just investments made.</p>
+
+        <h2 style="margin-top: 60px;">Our Values</h2>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">🤝</div>
+                <h3>Partnership</h3>
+                <p>We believe in equal commitment from all parties – time, effort, and resources.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">🎯</div>
+                <h3>Action-Oriented</h3>
+                <p>We're for doers, not dreamers. Every member is ready to build.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">💡</div>
+                <h3>Innovation</h3>
+                <p>We support bold ideas and the people who dare to bring them to life.</p>
+            </div>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 40px; border-radius: 12px; margin-top: 60px; text-align: center;">
+            <h2 style="color: #8a728c; margin-bottom: 20px;">Ready to Start Building?</h2>
+            <p style="margin-bottom: 30px;">Join thousands of entrepreneurs finding their perfect business partners on BizzStop.</p>
+            <a href="/sign-uplogin.html" class="cta-button">Get Started Today</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

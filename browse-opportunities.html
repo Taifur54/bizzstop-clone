@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Opportunities - BizzStop</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .browse-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 20px;
+        }
+        .browse-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .browse-header h2 {
+            color: #8a728c;
+            margin-bottom: 10px;
+        }
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .filter-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .ideas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .idea-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .idea-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .idea-header {
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        .idea-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .idea-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        .idea-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .category-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #8a728c;
+            color: white;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .idea-description {
+            color: #555;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        .idea-investment {
+            font-weight: bold;
+            color: #8a728c;
+            margin-bottom: 10px;
+        }
+        .contact-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+        .contact-hidden {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+        }
+        .reveal-btn {
+            background: #8a728c;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .reveal-btn:hover {
+            background: #6f5a70;
+        }
+        .reveal-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .contact-revealed {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+        }
+        .contact-revealed p {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .contact-revealed strong {
+            color: #8a728c;
+            min-width: 60px;
+        }
+        .no-reveals {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 18px;
+            color: #666;
+        }
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        .no-results h3 {
+            margin-bottom: 10px;
+        }
+        @media (max-width: 768px) {
+            .ideas-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- User Status Bar -->
+    <div id="user-status-bar" style="background: #f8f9fa; padding: 10px 30px; display: flex; justify-content: flex-end; align-items: center; gap: 15px; font-family: Arial, sans-serif; font-size: 14px; border-bottom: 1px solid #dee2e6;">
+        <div id="user-status-content"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop,q=95/emBvaPk2upU9HDdb/bizzstop-4-RuK6rZqCLWHaMwpy.jpg" alt="BizzStop logo">
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/post-idea.html">Post idea</a></li>
+                <li><a href="/browse-opportunities.html">Browse opportunities</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/subscription-plans.html">Subscription Plans</a></li>
+                <li><a href="/sign-uplogin.html">Sign-up/Login</a></li>
+                <li><a href="/profile.html">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="browse-container">
+        <div class="browse-header">
+            <h2>Browse Business Opportunities</h2>
+            <p>Find the perfect partnership to build together</p>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="Food & Beverage">Food & Beverage</option>
+                    <option value="Technology">Technology</option>
+                    <option value="E-commerce">E-commerce</option>
+                    <option value="Services">Services</option>
+                    <option value="Retail">Retail</option>
+                    <option value="Health & Fitness">Health & Fitness</option>
+                    <option value="Education">Education</option>
+                    <option value="Real Estate">Real Estate</option>
+                    <option value="Manufacturing">Manufacturing</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="investmentFilter">
+                    <option value="">All Investments</option>
+                    <option value="< $5,000">< $5,000</option>
+                    <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                    <option value="$10,000 - $25,000">$10,000 - $25,000</option>
+                    <option value="$25,000 - $50,000">$25,000 - $50,000</option>
+                    <option value="$50,000 - $100,000">$50,000 - $100,000</option>
+                    <option value="$100,000+">$100,000+</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <input type="text" id="searchInput" placeholder="Search by title or location...">
+            </div>
+        </div>
+
+        <div id="ideasContainer" class="ideas-grid">
+            <div class="loading">Loading opportunities...</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script>
+        let allIdeas = [];
+        let currentUser = null;
+        let userProfile = null;
+        let revealedContacts = new Set(); // Track revealed contacts
+
+        // Load ideas from database
+        async function loadIdeas() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('business_ideas')
+                    .select('*')
+                    .eq('status', 'active')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                allIdeas = data || [];
+                displayIdeas(allIdeas);
+            } catch (error) {
+                console.error('Error loading ideas:', error);
+                document.getElementById('ideasContainer').innerHTML = `
+                    <div class="no-results">
+                        <h3>Error loading opportunities</h3>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Display ideas
+        function displayIdeas(ideas) {
+            const container = document.getElementById('ideasContainer');
+            
+            if (ideas.length === 0) {
+                container.innerHTML = `
+                    <div class="no-results">
+                        <h3>No opportunities found</h3>
+                        <p>Be the first to <a href="/post-idea.html">post a business idea</a>!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = ideas.map(idea => {
+                const isRevealed = revealedContacts.has(idea.id);
+                
+                return `
+                    <div class="idea-card">
+                        <div class="idea-header">
+                            <div class="idea-title">${idea.title}</div>
+                            <div class="idea-meta">
+                                <span class="category-badge">${idea.category}</span>
+                                <span>📍 ${idea.location}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="idea-investment">💰 Investment: ${idea.investment_needed}</div>
+                        
+                        <div class="idea-description">${idea.description}</div>
+                        
+                        <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                            <strong>Looking for:</strong> ${idea.looking_for}
+                        </div>
+                        
+                        <div class="contact-section" id="contact-${idea.id}">
+                            ${isRevealed ? renderRevealedContact(idea) : renderHiddenContact(idea.id)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Render hidden contact
+        function renderHiddenContact(ideaId) {
+            return `
+                <div class="contact-hidden">
+                    <p>📞 Contact information is hidden</p>
+                    <button class="reveal-btn" onclick="revealContact('${ideaId}')">
+                        Reveal Contact (1 Credit)
+                    </button>
+                    <p class="no-reveals" id="no-reveals-${ideaId}" style="display: none;">
+                        You need more reveals. <a href="/subscription-plans.html">Buy more</a>
+                    </p>
+                </div>
+            `;
+        }
+
+        // Render revealed contact
+        function renderRevealedContact(idea) {
+            return `
+                <div class="contact-revealed">
+                    <p><strong>📧 Email:</strong> ${idea.contact_email}</p>
+                    <p><strong>📞 Phone:</strong> ${idea.contact_phone}</p>
+                </div>
+            `;
+        }
+
+        // Reveal contact function
+        window.revealContact = async function(ideaId) {
+            // Check if user is logged in
+            if (!currentUser) {
+                alert('Please login to reveal contact information');
+                window.location.href = '/sign-uplogin.html';
+                return;
+            }
+
+            // Check if user has reveals remaining
+            if (!userProfile || userProfile.reveals_remaining <= 0) {
+                document.getElementById(`no-reveals-${ideaId}`).style.display = 'block';
+                return;
+            }
+
+            try {
+                // Deduct reveal
+                const newReveals = userProfile.reveals_remaining - 1;
+                const updated = await updateReveals(currentUser.id, newReveals);
+                
+                if (!updated) {
+                    throw new Error('Failed to update reveals');
+                }
+
+                // Update local profile
+                userProfile.reveals_remaining = newReveals;
+                
+                // Mark as revealed
+                revealedContacts.add(ideaId);
+
+                // Find the idea
+                const idea = allIdeas.find(i => i.id === ideaId);
+                
+                // Update the contact section
+                const contactSection = document.getElementById(`contact-${ideaId}`);
+                contactSection.innerHTML = renderRevealedContact(idea);
+
+                // Reload user status to show updated reveals
+                loadUserStatus();
+
+                // Log the reveal (optional - for analytics)
+                await supabaseClient
+                    .from('contact_reveals')
+                    .insert([{
+                        user_id: currentUser.id,
+                        business_idea_id: ideaId,
+                        revealed_at: new Date().toISOString()
+                    }]);
+
+            } catch (error) {
+                console.error('Error revealing contact:', error);
+                alert('Error revealing contact. Please try again.');
+            }
+        };
+
+        // Filter ideas
+        function filterIdeas() {
+            const category = document.getElementById('categoryFilter').value;
+            const investment = document.getElementById('investmentFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            const filtered = allIdeas.filter(idea => {
+                const matchCategory = !category || idea.category === category;
+                const matchInvestment = !investment || idea.investment_needed === investment;
+                const matchSearch = !search || 
+                    idea.title.toLowerCase().includes(search) || 
+                    idea.location.toLowerCase().includes(search) ||
+                    idea.description.toLowerCase().includes(search);
+
+                return matchCategory && matchInvestment && matchSearch;
+            });
+
+            displayIdeas(filtered);
+        }
+
+        // Add event listeners for filters
+        document.getElementById('categoryFilter').addEventListener('change', filterIdeas);
+        document.getElementById('investmentFilter').addEventListener('change', filterIdeas);
+        document.getElementById('searchInput').addEventListener('input', filterIdeas);
+
+        // Initialize page
+        (async function() {
+            currentUser = await checkAuth();
+            if (currentUser) {
+                userProfile = await getUserProfile(currentUser.id);
+            }
+            await loadIdeas();
+        })();
+    </script>
+</body>
+</html>

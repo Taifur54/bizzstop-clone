@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Plans - BizzStop</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .plans-hero {
+            background: linear-gradient(135deg, #8a728c 0%, #6f5a70 100%);
+            color: white;
+            padding: 100px 20px 80px;
+            text-align: center;
+        }
+        .plans-hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .plans-hero p {
+            font-size: 20px;
+            opacity: 0.95;
+        }
+        .plans-container {
+            max-width: 1200px;
+            margin: -60px auto 80px;
+            padding: 0 20px;
+        }
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .plan-card {
+            background: white;
+            border-radius: 12px;
+            padding: 40px 30px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .plan-card.featured {
+            border: 3px solid #8a728c;
+            transform: scale(1.05);
+        }
+        .plan-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #8a728c;
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .plan-name {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .plan-price {
+            font-size: 48px;
+            color: #8a728c;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .plan-price span {
+            font-size: 18px;
+            color: #666;
+        }
+        .plan-reveals {
+            font-size: 20px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+        .plan-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .plan-features li:before {
+            content: "✓";
+            color: #8a728c;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .plan-button {
+            width: 100%;
+            padding: 15px;
+            background: #8a728c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .plan-button:hover {
+            background: #6f5a70;
+        }
+        .plan-button.secondary {
+            background: white;
+            color: #8a728c;
+            border: 2px solid #8a728c;
+        }
+        .plan-button.secondary:hover {
+            background: #f8f9fa;
+        }
+        .faq-section {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+        .faq-section h2 {
+            text-align: center;
+            color: #8a728c;
+            font-size: 36px;
+            margin-bottom: 40px;
+        }
+        .faq-item {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .faq-question {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .faq-answer {
+            color: #666;
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .plans-hero h1 {
+                font-size: 32px;
+            }
+            .plan-card.featured {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- User Status Bar -->
+    <div id="user-status-bar" style="background: #f8f9fa; padding: 10px 30px; display: flex; justify-content: flex-end; align-items: center; gap: 15px; font-family: Arial, sans-serif; font-size: 14px; border-bottom: 1px solid #dee2e6;">
+        <div id="user-status-content"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop,q=95/emBvaPk2upU9HDdb/bizzstop-4-RuK6rZqCLWHaMwpy.jpg" alt="BizzStop logo">
+            </a>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/post-idea.html">Post idea</a></li>
+                <li><a href="/browse-opportunities.html">Browse opportunities</a></li>
+                <li><a href="/about.html">About</a></li>
+                <li><a href="/subscription-plans.html">Subscription Plans</a></li>
+                <li><a href="/sign-uplogin.html">Sign-up/Login</a></li>
+                <li><a href="/profile.html">Profile</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="plans-hero">
+        <h1>Subscription Plans</h1>
+        <p>Choose the perfect plan to connect with potential business partners</p>
+    </div>
+
+    <div class="plans-container">
+        <div class="plans-grid">
+            <!-- Starter Plan -->
+            <div class="plan-card">
+                <div class="plan-name">Starter</div>
+                <div class="plan-price">$9<span>/month</span></div>
+                <div class="plan-reveals">10 Contact Reveals</div>
+                <ul class="plan-features">
+                    <li>Post unlimited business ideas</li>
+                    <li>Browse all opportunities</li>
+                    <li>10 contact reveals per month</li>
+                    <li>Email support</li>
+                    <li>Basic profile</li>
+                </ul>
+                <button class="plan-button secondary" onclick="selectPlan('starter')">Get Started</button>
+            </div>
+
+            <!-- Pro Plan (Featured) -->
+            <div class="plan-card featured">
+                <div class="plan-badge">MOST POPULAR</div>
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">$29<span>/month</span></div>
+                <div class="plan-reveals">50 Contact Reveals</div>
+                <ul class="plan-features">
+                    <li>Everything in Starter</li>
+                    <li>50 contact reveals per month</li>
+                    <li>Featured idea listings</li>
+                    <li>Priority support</li>
+                    <li>Advanced analytics</li>
+                    <li>Verified badge</li>
+                </ul>
+                <button class="plan-button" onclick="selectPlan('pro')">Get Pro</button>
+            </div>
+
+            <!-- Business Plan -->
+            <div class="plan-card">
+                <div class="plan-name">Business</div>
+                <div class="plan-price">$79<span>/month</span></div>
+                <div class="plan-reveals">Unlimited Reveals</div>
+                <ul class="plan-features">
+                    <li>Everything in Pro</li>
+                    <li>Unlimited contact reveals</li>
+                    <li>Multiple team members</li>
+                    <li>White-label options</li>
+                    <li>Dedicated account manager</li>
+                    <li>Custom integrations</li>
+                </ul>
+                <button class="plan-button secondary" onclick="selectPlan('business')">Contact Sales</button>
+            </div>
+        </div>
+
+        <!-- One-Time Packages -->
+        <div style="margin-top: 60px;">
+            <h2 style="text-align: center; color: #8a728c; font-size: 32px; margin-bottom: 30px;">One-Time Reveal Packages</h2>
+            <div class="plans-grid">
+                <div class="plan-card">
+                    <div class="plan-name">5 Reveals</div>
+                    <div class="plan-price">$5</div>
+                    <div class="plan-reveals">One-time purchase</div>
+                    <button class="plan-button secondary" onclick="buyReveals(5, 5)">Buy Now</button>
+                </div>
+                <div class="plan-card">
+                    <div class="plan-name">15 Reveals</div>
+                    <div class="plan-price">$12</div>
+                    <div class="plan-reveals">One-time purchase • Save 20%</div>
+                    <button class="plan-button" onclick="buyReveals(15, 12)">Buy Now</button>
+                </div>
+                <div class="plan-card">
+                    <div class="plan-name">30 Reveals</div>
+                    <div class="plan-price">$20</div>
+                    <div class="plan-reveals">One-time purchase • Save 33%</div>
+                    <button class="plan-button secondary" onclick="buyReveals(30, 20)">Buy Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+        <h2>Frequently Asked Questions</h2>
+        
+        <div class="faq-item">
+            <div class="faq-question">What are contact reveals?</div>
+            <div class="faq-answer">Contact reveals allow you to access the email and phone number of business opportunity posters. Each reveal uses one credit from your account.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Can I cancel my subscription?</div>
+            <div class="faq-answer">Yes, you can cancel your subscription at any time. Your reveals will remain available until the end of your billing period.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Do unused reveals roll over?</div>
+            <div class="faq-answer">For one-time packages, yes! Your reveals never expire. For monthly subscriptions, reveals reset each month but don't roll over.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Can I upgrade or downgrade my plan?</div>
+            <div class="faq-answer">Absolutely! You can change your plan at any time from your profile dashboard. Changes take effect immediately.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-question">Is posting business ideas free?</div>
+            <div class="faq-answer">Yes! Posting business ideas is completely free on all plans. You only need reveals to view contact information of other posters.</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+    <script>
+        async function selectPlan(planType) {
+            const user = await checkAuth();
+            if (!user) {
+                alert('Please login or create an account to subscribe');
+                window.location.href = '/sign-uplogin.html';
+                return;
+            }
+
+            // In a real implementation, this would integrate with Stripe or another payment processor
+            alert(`You selected the ${planType} plan! This will redirect to payment processing (not implemented in demo).`);
+            
+            // For demo purposes, you could add reveals manually here
+            // In production, this would happen after payment success
+        }
+
+        async function buyReveals(count, price) {
+            const user = await checkAuth();
+            if (!user) {
+                alert('Please login or create an account to purchase reveals');
+                window.location.href = '/sign-uplogin.html';
+                return;
+            }
+
+            // In a real implementation, this would integrate with payment processing
+            const confirmed = confirm(`Purchase ${count} reveals for $${price}?`);
+            
+            if (confirmed) {
+                // For demo purposes, let's actually add the reveals
+                try {
+                    const profile = await getUserProfile(user.id);
+                    const currentReveals = profile ? profile.reveals_remaining : 0;
+                    const newTotal = currentReveals + count;
+                    
+                    const updated = await updateReveals(user.id, newTotal);
+                    
+                    if (updated) {
+                        alert(`Success! ${count} reveals added to your account!`);
+                        loadUserStatus(); // Refresh the status bar
+                        window.location.href = '/profile.html';
+                    } else {
+                        alert('Error adding reveals. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error processing purchase. Please try again.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
