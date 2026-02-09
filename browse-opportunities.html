@@ -45,13 +45,23 @@
         .idea-card {
             background: white;
             border-radius: 12px;
-            padding: 25px;
+            overflow: hidden;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
         }
         .idea-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .idea-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+        .idea-content {
+            padding: 25px;
         }
         .idea-header {
             border-bottom: 2px solid #f0f0f0;
@@ -69,6 +79,7 @@
             gap: 15px;
             font-size: 13px;
             color: #666;
+            flex-wrap: wrap;
         }
         .idea-meta span {
             display: flex;
@@ -88,59 +99,25 @@
             color: #555;
             line-height: 1.6;
             margin: 15px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        .idea-investment {
-            font-weight: bold;
-            color: #8a728c;
-            margin-bottom: 10px;
-        }
-        .contact-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid #f0f0f0;
-        }
-        .contact-hidden {
-            text-align: center;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 6px;
-        }
-        .reveal-btn {
+        .view-details-btn {
+            width: 100%;
+            padding: 12px;
             background: #8a728c;
             color: white;
             border: none;
-            padding: 10px 25px;
             border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
             transition: background 0.3s;
+            margin-top: 15px;
         }
-        .reveal-btn:hover {
+        .view-details-btn:hover {
             background: #6f5a70;
-        }
-        .reveal-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        .contact-revealed {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 6px;
-        }
-        .contact-revealed p {
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .contact-revealed strong {
-            color: #8a728c;
-            min-width: 60px;
-        }
-        .no-reveals {
-            color: #dc3545;
-            font-size: 13px;
-            margin-top: 10px;
         }
         .loading {
             text-align: center;
@@ -172,18 +149,18 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="logo">
+            <a href="index.html" class="logo">
                 <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop,q=95/emBvaPk2upU9HDdb/bizzstop-4-RuK6rZqCLWHaMwpy.jpg" alt="BizzStop logo">
             </a>
             <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/post-idea.html">Post idea</a></li>
-                <li><a href="/browse-opportunities.html">Browse opportunities</a></li>
-                <li><a href="/about.html">About</a></li>
-                <li><a href="/subscription-plans.html">Subscription Plans</a></li>
-                <li><a href="/sign-uplogin.html">Sign-up/Login</a></li>
-                <li><a href="/profile.html">Profile</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="start.html">Post idea</a></li>
+                <li><a href="browse-opportunities.html">Browse opportunities</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="subscription-plans.html">Subscription Plans</a></li>
+                <li><a href="sign-uplogin.html">Sign-up/Login</a></li>
+                <li><a href="profile.html">Profile</a></li>
             </ul>
         </div>
     </nav>
@@ -211,17 +188,6 @@
                 </select>
             </div>
             <div class="filter-group">
-                <select id="investmentFilter">
-                    <option value="">All Investments</option>
-                    <option value="< $5,000">< $5,000</option>
-                    <option value="$5,000 - $10,000">$5,000 - $10,000</option>
-                    <option value="$10,000 - $25,000">$10,000 - $25,000</option>
-                    <option value="$25,000 - $50,000">$25,000 - $50,000</option>
-                    <option value="$50,000 - $100,000">$50,000 - $100,000</option>
-                    <option value="$100,000+">$100,000+</option>
-                </select>
-            </div>
-            <div class="filter-group">
                 <input type="text" id="searchInput" placeholder="Search by title or location...">
             </div>
         </div>
@@ -235,9 +201,6 @@
     <script src="auth.js"></script>
     <script>
         let allIdeas = [];
-        let currentUser = null;
-        let userProfile = null;
-        let revealedContacts = new Set(); // Track revealed contacts
 
         // Load ideas from database
         async function loadIdeas() {
@@ -271,136 +234,60 @@
                 container.innerHTML = `
                     <div class="no-results">
                         <h3>No opportunities found</h3>
-                        <p>Be the first to <a href="/post-idea.html">post a business idea</a>!</p>
+                        <p>Be the first to <a href="start.html">post a business idea</a>!</p>
                     </div>
                 `;
                 return;
             }
 
             container.innerHTML = ideas.map(idea => {
-                const isRevealed = revealedContacts.has(idea.id);
+                // Get first image URL or use placeholder
+                const imageUrl = idea.image_urls && idea.image_urls.length > 0 
+                    ? idea.image_urls[0] 
+                    : 'https://via.placeholder.com/400x200?text=No+Image';
                 
                 return `
-                    <div class="idea-card">
-                        <div class="idea-header">
-                            <div class="idea-title">${idea.title}</div>
-                            <div class="idea-meta">
-                                <span class="category-badge">${idea.category}</span>
-                                <span>📍 ${idea.location}</span>
+                    <div class="idea-card" onclick="viewDetails('${idea.id}')">
+                        <img src="${imageUrl}" alt="${idea.title}" class="idea-image" onerror="this.src='https://via.placeholder.com/400x200?text=Image+Not+Found'">
+                        
+                        <div class="idea-content">
+                            <div class="idea-header">
+                                <div class="idea-title">${idea.title}</div>
+                                <div class="idea-meta">
+                                    <span class="category-badge">${idea.category}</span>
+                                    <span>📍 ${idea.location}</span>
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="idea-investment">💰 Investment: ${idea.investment_needed}</div>
-                        
-                        <div class="idea-description">${idea.description}</div>
-                        
-                        <div style="margin: 10px 0; padding: 10px; background: #f8f9fa; border-radius: 6px;">
-                            <strong>Looking for:</strong> ${idea.looking_for}
-                        </div>
-                        
-                        <div class="contact-section" id="contact-${idea.id}">
-                            ${isRevealed ? renderRevealedContact(idea) : renderHiddenContact(idea.id)}
+                            
+                            <div class="idea-description">${idea.description}</div>
+                            
+                            <button class="view-details-btn" onclick="event.stopPropagation(); viewDetails('${idea.id}')">
+                                View Details
+                            </button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Render hidden contact
-        function renderHiddenContact(ideaId) {
-            return `
-                <div class="contact-hidden">
-                    <p>📞 Contact information is hidden</p>
-                    <button class="reveal-btn" onclick="revealContact('${ideaId}')">
-                        Reveal Contact (1 Credit)
-                    </button>
-                    <p class="no-reveals" id="no-reveals-${ideaId}" style="display: none;">
-                        You need more reveals. <a href="/subscription-plans.html">Buy more</a>
-                    </p>
-                </div>
-            `;
-        }
-
-        // Render revealed contact
-        function renderRevealedContact(idea) {
-            return `
-                <div class="contact-revealed">
-                    <p><strong>📧 Email:</strong> ${idea.contact_email}</p>
-                    <p><strong>📞 Phone:</strong> ${idea.contact_phone}</p>
-                </div>
-            `;
-        }
-
-        // Reveal contact function
-        window.revealContact = async function(ideaId) {
-            // Check if user is logged in
-            if (!currentUser) {
-                alert('Please login to reveal contact information');
-                window.location.href = '/sign-uplogin.html';
-                return;
-            }
-
-            // Check if user has reveals remaining
-            if (!userProfile || userProfile.reveals_remaining <= 0) {
-                document.getElementById(`no-reveals-${ideaId}`).style.display = 'block';
-                return;
-            }
-
-            try {
-                // Deduct reveal
-                const newReveals = userProfile.reveals_remaining - 1;
-                const updated = await updateReveals(currentUser.id, newReveals);
-                
-                if (!updated) {
-                    throw new Error('Failed to update reveals');
-                }
-
-                // Update local profile
-                userProfile.reveals_remaining = newReveals;
-                
-                // Mark as revealed
-                revealedContacts.add(ideaId);
-
-                // Find the idea
-                const idea = allIdeas.find(i => i.id === ideaId);
-                
-                // Update the contact section
-                const contactSection = document.getElementById(`contact-${ideaId}`);
-                contactSection.innerHTML = renderRevealedContact(idea);
-
-                // Reload user status to show updated reveals
-                loadUserStatus();
-
-                // Log the reveal (optional - for analytics)
-                await supabaseClient
-                    .from('contact_reveals')
-                    .insert([{
-                        user_id: currentUser.id,
-                        business_idea_id: ideaId,
-                        revealed_at: new Date().toISOString()
-                    }]);
-
-            } catch (error) {
-                console.error('Error revealing contact:', error);
-                alert('Error revealing contact. Please try again.');
-            }
+        // View idea details
+        window.viewDetails = function(ideaId) {
+            window.location.href = `idea-details.html?id=${ideaId}`;
         };
 
         // Filter ideas
         function filterIdeas() {
             const category = document.getElementById('categoryFilter').value;
-            const investment = document.getElementById('investmentFilter').value;
             const search = document.getElementById('searchInput').value.toLowerCase();
 
             const filtered = allIdeas.filter(idea => {
                 const matchCategory = !category || idea.category === category;
-                const matchInvestment = !investment || idea.investment_needed === investment;
                 const matchSearch = !search || 
                     idea.title.toLowerCase().includes(search) || 
                     idea.location.toLowerCase().includes(search) ||
                     idea.description.toLowerCase().includes(search);
 
-                return matchCategory && matchInvestment && matchSearch;
+                return matchCategory && matchSearch;
             });
 
             displayIdeas(filtered);
@@ -408,17 +295,10 @@
 
         // Add event listeners for filters
         document.getElementById('categoryFilter').addEventListener('change', filterIdeas);
-        document.getElementById('investmentFilter').addEventListener('change', filterIdeas);
         document.getElementById('searchInput').addEventListener('input', filterIdeas);
 
         // Initialize page
-        (async function() {
-            currentUser = await checkAuth();
-            if (currentUser) {
-                userProfile = await getUserProfile(currentUser.id);
-            }
-            await loadIdeas();
-        })();
+        loadIdeas();
     </script>
 </body>
 </html>
