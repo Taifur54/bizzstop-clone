@@ -59,6 +59,9 @@
             font-size: 12px;
             font-weight: bold;
         }
+        .plan-badge.gold {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+        }
         .plan-name {
             font-size: 28px;
             color: #333;
@@ -88,14 +91,17 @@
             padding: 12px 0;
             border-bottom: 1px solid #f0f0f0;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 10px;
+            font-size: 15px;
         }
         .plan-features li:before {
             content: "✓";
             color: #8a728c;
             font-weight: bold;
             font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
         }
         .plan-button {
             width: 100%;
@@ -119,6 +125,13 @@
         }
         .plan-button.secondary:hover {
             background: #f8f9fa;
+        }
+        .plan-button.coming-soon {
+            background: #95a5a6;
+            cursor: not-allowed;
+        }
+        .plan-button.coming-soon:hover {
+            background: #95a5a6;
         }
         .faq-section {
             max-width: 800px;
@@ -167,18 +180,18 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="logo">
+            <a href="index.html" class="logo">
                 <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop,q=95/emBvaPk2upU9HDdb/bizzstop-4-RuK6rZqCLWHaMwpy.jpg" alt="BizzStop logo">
             </a>
             <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/post-idea.html">Post idea</a></li>
-                <li><a href="/browse-opportunities.html">Browse opportunities</a></li>
-                <li><a href="/about.html">About</a></li>
-                <li><a href="/subscription-plans.html">Subscription Plans</a></li>
-                <li><a href="/sign-uplogin.html">Sign-up/Login</a></li>
-                <li><a href="/profile.html">Profile</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="start.html">Post idea</a></li>
+                <li><a href="browse-opportunities.html">Browse opportunities</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="subscription-plans.html">Subscription Plans</a></li>
+                <li><a href="sign-uplogin.html">Sign-up/Login</a></li>
+                <li><a href="profile.html">Profile</a></li>
             </ul>
         </div>
     </nav>
@@ -202,7 +215,7 @@
                     <li>Email support</li>
                     <li>Basic profile</li>
                 </ul>
-                <button class="plan-button secondary" onclick="selectPlan('starter')">Get Started</button>
+                <button class="plan-button secondary" onclick="selectPlan('starter')">Buy Now</button>
             </div>
 
             <!-- Pro Plan (Featured) -->
@@ -210,32 +223,36 @@
                 <div class="plan-badge">MOST POPULAR</div>
                 <div class="plan-name">Pro</div>
                 <div class="plan-price">$29<span>/month</span></div>
-                <div class="plan-reveals">50 Contact Reveals</div>
+                <div class="plan-reveals">35 Contact Reveals</div>
                 <ul class="plan-features">
-                    <li>Everything in Starter</li>
-                    <li>50 contact reveals per month</li>
-                    <li>Featured idea listings</li>
-                    <li>Priority support</li>
-                    <li>Advanced analytics</li>
-                    <li>Verified badge</li>
+                    <li>35 reveals per month</li>
+                    <li>Priority listing (appear higher in search results)</li>
+                    <li>AI Business Pitch Generator – up to 10 pitches/month</li>
+                    <li>AI Business Name & Slogan Generator</li>
+                    <li>Verified profile badge</li>
                 </ul>
-                <button class="plan-button" onclick="selectPlan('pro')">Get Pro</button>
+                <button class="plan-button coming-soon" disabled>Coming Soon</button>
             </div>
 
             <!-- Business Plan -->
             <div class="plan-card">
+                <div class="plan-badge gold">PREMIUM</div>
                 <div class="plan-name">Business</div>
                 <div class="plan-price">$79<span>/month</span></div>
-                <div class="plan-reveals">Unlimited Reveals</div>
+                <div class="plan-reveals">Unlimited Contact Reveals</div>
                 <ul class="plan-features">
                     <li>Everything in Pro</li>
-                    <li>Unlimited contact reveals</li>
-                    <li>Multiple team members</li>
-                    <li>White-label options</li>
-                    <li>Dedicated account manager</li>
-                    <li>Custom integrations</li>
+                    <li>Always at the very top of search & category pages</li>
+                    <li>AI Business Pitch Generator – unlimited</li>
+                    <li>AI One-Click Business Idea Generator</li>
+                    <li>AI Smart Matchmaking (suggests perfect partners for your post or criteria)</li>
+                    <li>AI Influencer Recommendations – 5–20 tailored TikTok/IG influencers per idea (with info and suggestions)</li>
+                    <li>AI 12-month financial projection template (auto-filled)</li>
+                    <li>Early access to every new feature we drop</li>
+                    <li>Gold verified badge + "Supernova" tag on all your posts so people know you're vetted</li>
+                    <li>Access to business idea library</li>
                 </ul>
-                <button class="plan-button secondary" onclick="selectPlan('business')">Contact Sales</button>
+                <button class="plan-button coming-soon" disabled>Coming Soon</button>
             </div>
         </div>
 
@@ -303,7 +320,7 @@
             const user = await checkAuth();
             if (!user) {
                 alert('Please login or create an account to subscribe');
-                window.location.href = '/sign-uplogin.html';
+                window.location.href = 'sign-uplogin.html';
                 return;
             }
 
@@ -318,7 +335,7 @@
             const user = await checkAuth();
             if (!user) {
                 alert('Please login or create an account to purchase reveals');
-                window.location.href = '/sign-uplogin.html';
+                window.location.href = 'sign-uplogin.html';
                 return;
             }
 
@@ -337,7 +354,7 @@
                     if (updated) {
                         alert(`Success! ${count} reveals added to your account!`);
                         loadUserStatus(); // Refresh the status bar
-                        window.location.href = '/profile.html';
+                        window.location.href = 'profile.html';
                     } else {
                         alert('Error adding reveals. Please try again.');
                     }
