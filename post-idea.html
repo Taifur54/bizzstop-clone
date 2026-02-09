@@ -57,6 +57,76 @@
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
+        
+        /* Image Upload Styles */
+        .image-upload-section {
+            border: 2px dashed #8a728c;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f7f9;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .image-upload-section:hover {
+            background: #f0eff1;
+            border-color: #6f5a70;
+        }
+        .image-upload-section input[type="file"] {
+            display: none;
+        }
+        .upload-icon {
+            font-size: 48px;
+            color: #8a728c;
+            margin-bottom: 10px;
+        }
+        .upload-text {
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .upload-limit {
+            font-size: 12px;
+            color: #999;
+        }
+        .image-previews {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .image-preview-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .image-preview-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+        }
+        .remove-image-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        .remove-image-btn:hover {
+            background: rgba(200, 35, 51, 1);
+        }
+        
         .submit-btn {
             width: 100%;
             padding: 14px;
@@ -105,6 +175,9 @@
             .form-row {
                 grid-template-columns: 1fr;
             }
+            .image-previews {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -117,18 +190,18 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="/" class="logo">
+            <a href="index.html" class="logo">
                 <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=375,fit=crop,q=95/emBvaPk2upU9HDdb/bizzstop-4-RuK6rZqCLWHaMwpy.jpg" alt="BizzStop logo">
             </a>
             <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/post-idea.html">Post idea</a></li>
-                <li><a href="/browse-opportunities.html">Browse opportunities</a></li>
-                <li><a href="/about.html">About</a></li>
-                <li><a href="/subscription-plans.html">Subscription Plans</a></li>
-                <li><a href="/sign-uplogin.html">Sign-up/Login</a></li>
-                <li><a href="/profile.html">Profile</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="start.html">Post idea</a></li>
+                <li><a href="browse-opportunities.html">Browse opportunities</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="subscription-plans.html">Subscription Plans</a></li>
+                <li><a href="sign-uplogin.html">Sign-up/Login</a></li>
+                <li><a href="profile.html">Profile</a></li>
             </ul>
         </div>
     </nav>
@@ -174,6 +247,18 @@
                 <div class="char-count"><span id="lookingCharCount">0</span>/500</div>
             </div>
 
+            <!-- Image Upload Section -->
+            <div class="form-group">
+                <label>Business Images *</label>
+                <div class="image-upload-section" onclick="document.getElementById('imageUpload').click()">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">Click to upload images</div>
+                    <div class="upload-limit">At least 1 image required • Up to 5 images • Max 5MB each • JPG, PNG</div>
+                    <input type="file" id="imageUpload" accept="image/jpeg,image/png,image/jpg" multiple required>
+                </div>
+                <div id="imagePreviews" class="image-previews"></div>
+            </div>
+
             <div class="form-row">
                 <div class="form-group">
                     <label for="location">Location *</label>
@@ -198,6 +283,10 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script>
+        let selectedImages = [];
+        const MAX_IMAGES = 5;
+        const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
         // Character counters
         document.getElementById('description').addEventListener('input', function() {
             document.getElementById('descCharCount').textContent = this.value.length;
@@ -207,6 +296,63 @@
             document.getElementById('lookingCharCount').textContent = this.value.length;
         });
 
+        // Image Upload Handler
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const files = Array.from(e.target.files);
+            
+            // Check total number of images
+            if (selectedImages.length + files.length > MAX_IMAGES) {
+                alert(`You can only upload up to ${MAX_IMAGES} images`);
+                return;
+            }
+
+            files.forEach(file => {
+                // Validate file type
+                if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+                    alert(`${file.name} is not a valid image format. Please use JPG or PNG.`);
+                    return;
+                }
+
+                // Validate file size
+                if (file.size > MAX_FILE_SIZE) {
+                    alert(`${file.name} is too large. Maximum file size is 5MB.`);
+                    return;
+                }
+
+                // Add to selected images
+                selectedImages.push(file);
+            });
+
+            displayImagePreviews();
+            e.target.value = ''; // Reset input
+        });
+
+        // Display image previews
+        function displayImagePreviews() {
+            const container = document.getElementById('imagePreviews');
+            container.innerHTML = '';
+
+            selectedImages.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'image-preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview ${index + 1}">
+                        <button type="button" class="remove-image-btn" onclick="removeImage(${index})">×</button>
+                    `;
+                    container.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Remove image
+        window.removeImage = function(index) {
+            selectedImages.splice(index, 1);
+            displayImagePreviews();
+        };
+
         // Show message
         function showMessage(text, type = 'success') {
             const message = document.getElementById('message');
@@ -215,23 +361,60 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Upload images to Supabase Storage
+        async function uploadImages(userId, ideaId) {
+            const imageUrls = [];
+
+            for (let i = 0; i < selectedImages.length; i++) {
+                const file = selectedImages[i];
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${userId}/${ideaId}/${Date.now()}_${i}.${fileExt}`;
+
+                try {
+                    const { data, error } = await supabaseClient.storage
+                        .from('business-idea-images')
+                        .upload(fileName, file);
+
+                    if (error) throw error;
+
+                    // Get public URL
+                    const { data: urlData } = supabaseClient.storage
+                        .from('business-idea-images')
+                        .getPublicUrl(fileName);
+
+                    imageUrls.push(urlData.publicUrl);
+                } catch (error) {
+                    console.error('Error uploading image:', error);
+                    // Continue with other images even if one fails
+                }
+            }
+
+            return imageUrls;
+        }
+
         // Post Idea Form Handler
         document.getElementById('postIdeaForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // Check if at least 1 image is uploaded
+            if (selectedImages.length === 0) {
+                showMessage('Please upload at least 1 image of your business idea.', 'error');
+                return;
+            }
             
             // Check if user is logged in
             const user = await checkAuth();
             if (!user) {
                 showMessage('Please login to post a business idea.', 'error');
                 setTimeout(() => {
-                    window.location.href = '/sign-uplogin.html';
+                    window.location.href = 'sign-uplogin.html';
                 }, 2000);
                 return;
             }
 
             const btn = e.target.querySelector('.submit-btn');
             btn.disabled = true;
-            btn.textContent = 'Posting...';
+            btn.textContent = selectedImages.length > 0 ? 'Uploading images...' : 'Posting...';
 
             const formData = {
                 user_id: user.id,
@@ -248,22 +431,42 @@
             };
 
             try {
-                const { data, error } = await supabaseClient
+                // Insert the business idea first
+                const { data: ideaData, error: ideaError } = await supabaseClient
                     .from('business_ideas')
-                    .insert([formData]);
+                    .insert([formData])
+                    .select();
 
-                if (error) throw error;
+                if (ideaError) throw ideaError;
+
+                const ideaId = ideaData[0].id;
+
+                // Upload images if any
+                if (selectedImages.length > 0) {
+                    btn.textContent = 'Uploading images...';
+                    const imageUrls = await uploadImages(user.id, ideaId);
+
+                    // Update the idea with image URLs
+                    if (imageUrls.length > 0) {
+                        await supabaseClient
+                            .from('business_ideas')
+                            .update({ image_urls: imageUrls })
+                            .eq('id', ideaId);
+                    }
+                }
 
                 showMessage('Business idea posted successfully!', 'success');
                 
                 // Reset form
                 e.target.reset();
+                selectedImages = [];
+                displayImagePreviews();
                 document.getElementById('descCharCount').textContent = '0';
                 document.getElementById('lookingCharCount').textContent = '0';
 
                 // Redirect to browse page after 2 seconds
                 setTimeout(() => {
-                    window.location.href = '/browse-opportunities.html';
+                    window.location.href = 'browse-opportunities.html';
                 }, 2000);
 
             } catch (error) {
