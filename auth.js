@@ -28,7 +28,7 @@ async function loadUserStatus() {
     } else {
         statusContent.innerHTML = `
             <span style="color: #666;">Not logged in</span>
-            <a href="/sign-uplogin.html" style="background: #8a728c; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: bold;">Login</a>
+            <a href="sign-uplogin.html" style="background: #8a728c; color: white; padding: 6px 12px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: bold;">Login</a>
         `;
     }
 }
