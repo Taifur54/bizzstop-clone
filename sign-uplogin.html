@@ -129,7 +129,7 @@
             <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="post-idea.html">Post idea</a></li>
+                <li><a href="start.html">Post idea</a></li>
                 <li><a href="browse-opportunities.html">Browse opportunities</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="subscription-plans.html">Subscription Plans</a></li>
@@ -242,7 +242,7 @@
                 
                 showMessage('Login successful! Redirecting...', 'success');
                 setTimeout(() => {
-                    window.location.href = '/profile.html';
+                    window.location.href = 'profile.html';
                 }, 1500);
             } catch (error) {
                 showMessage(error.message, 'error');
@@ -333,7 +333,7 @@
         (async function() {
             const user = await checkAuth();
             if (user) {
-                window.location.href = '/profile.html';
+                window.location.href = 'profile.html';
             }
         })();
     </script>
