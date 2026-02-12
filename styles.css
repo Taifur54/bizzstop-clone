@@ -53,7 +53,7 @@ body {
 }
 
 .logo img {
-    height: 100px;  /* 2x bigger: 50px → 100px */
+    height: 100px;
     width: auto;
 }
 
@@ -66,14 +66,14 @@ body {
 
 .nav-menu a {
     text-decoration: none;
-    color: #8a728c;  /* Your purple color */
-    font-weight: bold;  /* Make it bold */
-    font-size: 18px;  /* Bigger text */
+    color: #8a728c;
+    font-weight: bold;
+    font-size: 18px;
     transition: color 0.3s;
 }
 
 .nav-menu a:hover {
-    color: #8a728c;
+    color: #6f5a70;
 }
 
 .mobile-menu-toggle {
@@ -443,11 +443,36 @@ body {
     background: #6f5a70;
 }
 
+/* Footer Legal Links - ADDED THIS SECTION */
+.footer-legal {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #555;
+    text-align: center;
+}
+
+.footer-legal p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.footer-legal a {
+    color: #8a728c;
+    text-decoration: none;
+    transition: color 0.3s;
+    margin: 0 5px;
+}
+
+.footer-legal a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
 .copyright {
     text-align: center;
-    padding-top: 30px;
-    border-top: 1px solid #555;
+    padding-top: 20px;
     color: #999;
+    font-size: 14px;
 }
 
 /* Responsive Design */
@@ -509,6 +534,11 @@ body {
 
     .steps-grid {
         gap: 30px;
+    }
+    
+    .footer-legal a {
+        display: inline-block;
+        margin: 5px 10px;
     }
 }
 
