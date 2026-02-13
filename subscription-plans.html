@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscription Plans - BizzStop</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <!-- Paddle.js -->
+    <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+    
     <style>
         .plans-hero {
             background: linear-gradient(135deg, #8a728c 0%, #6f5a70 100%);
@@ -215,7 +219,7 @@
                     <li>Email support</li>
                     <li>Basic profile</li>
                 </ul>
-                <button class="plan-button secondary" onclick="selectPlan('starter')">Buy Now</button>
+                <button class="plan-button secondary" onclick="subscribeToPlan('starter')">Buy Now</button>
             </div>
 
             <!-- Pro Plan (Featured) -->
@@ -264,19 +268,19 @@
                     <div class="plan-name">5 Reveals</div>
                     <div class="plan-price">$5</div>
                     <div class="plan-reveals">One-time purchase</div>
-                    <button class="plan-button secondary" onclick="buyReveals(5, 5)">Buy Now</button>
+                    <button class="plan-button secondary" onclick="buyReveals('5-reveals')">Buy Now</button>
                 </div>
                 <div class="plan-card">
                     <div class="plan-name">15 Reveals</div>
                     <div class="plan-price">$12</div>
                     <div class="plan-reveals">One-time purchase • Save 20%</div>
-                    <button class="plan-button" onclick="buyReveals(15, 12)">Buy Now</button>
+                    <button class="plan-button" onclick="buyReveals('15-reveals')">Buy Now</button>
                 </div>
                 <div class="plan-card">
                     <div class="plan-name">30 Reveals</div>
                     <div class="plan-price">$20</div>
                     <div class="plan-reveals">One-time purchase • Save 33%</div>
-                    <button class="plan-button secondary" onclick="buyReveals(30, 20)">Buy Now</button>
+                    <button class="plan-button secondary" onclick="buyReveals('30-reveals')">Buy Now</button>
                 </div>
             </div>
         </div>
@@ -315,53 +319,146 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script src="script.js"></script>
+    
     <script>
-        async function selectPlan(planType) {
+        // ==========================================
+        // PADDLE CONFIGURATION
+        // ==========================================
+        
+        const PADDLE_CONFIG = {
+            clientToken: 'live_b11623814bbbd735d8bea052eb9',
+            
+            priceIds: {
+                'starter': 'pri_01khbaf078xx6vyzyjqyh5yn9x',      // $9/month Starter
+                'pro': 'pri_XXXXX',                                // Coming soon
+                'business': 'pri_XXXXX',                           // Coming soon
+                '5-reveals': 'pri_01khbar2pr436k88bh4hy59y4h',    // $5 one-time
+                '15-reveals': 'pri_01khbasdgdpxcn3xptk7g2zkfj',   // $12 one-time
+                '30-reveals': 'pri_01khbat7vyecw2t2wy03nwhyfc'    // $20 one-time
+            },
+            
+            sandbox: false  // Live mode
+        };
+        
+        // Initialize Paddle
+        if (typeof Paddle !== 'undefined') {
+            Paddle.Initialize({
+                token: PADDLE_CONFIG.clientToken,
+                environment: PADDLE_CONFIG.sandbox ? 'sandbox' : 'production',
+                eventCallback: function(data) {
+                    console.log('Paddle event:', data);
+                    
+                    // Handle successful payment
+                    if (data.name === 'checkout.completed') {
+                        handleSuccessfulPayment(data);
+                    }
+                }
+            });
+        }
+        
+        // ==========================================
+        // SUBSCRIPTION PURCHASE FUNCTIONS
+        // ==========================================
+        
+        async function subscribeToPlan(planType) {
+            // Check if user is logged in
             const user = await checkAuth();
             if (!user) {
                 alert('Please login or create an account to subscribe');
                 window.location.href = 'sign-uplogin.html';
                 return;
             }
-
-            // In a real implementation, this would integrate with Stripe or another payment processor
-            alert(`You selected the ${planType} plan! This will redirect to payment processing (not implemented in demo).`);
             
-            // For demo purposes, you could add reveals manually here
-            // In production, this would happen after payment success
+            const priceId = PADDLE_CONFIG.priceIds[planType];
+            
+            if (!priceId || priceId === 'pri_XXXXX') {
+                alert('This plan is not yet configured. Please contact support.');
+                return;
+            }
+            
+            // Open Paddle checkout
+            Paddle.Checkout.open({
+                items: [{
+                    priceId: priceId,
+                    quantity: 1
+                }],
+                customer: {
+                    email: user.email
+                },
+                customData: {
+                    userId: user.id,
+                    planType: planType
+                }
+            });
         }
-
-        async function buyReveals(count, price) {
+        
+        async function buyReveals(packageType) {
+            // Check if user is logged in
             const user = await checkAuth();
             if (!user) {
                 alert('Please login or create an account to purchase reveals');
                 window.location.href = 'sign-uplogin.html';
                 return;
             }
-
-            // In a real implementation, this would integrate with payment processing
-            const confirmed = confirm(`Purchase ${count} reveals for $${price}?`);
             
-            if (confirmed) {
-                // For demo purposes, let's actually add the reveals
-                try {
-                    const profile = await getUserProfile(user.id);
-                    const currentReveals = profile ? profile.reveals_remaining : 0;
-                    const newTotal = currentReveals + count;
-                    
-                    const updated = await updateReveals(user.id, newTotal);
-                    
-                    if (updated) {
-                        alert(`Success! ${count} reveals added to your account!`);
-                        loadUserStatus(); // Refresh the status bar
-                        window.location.href = 'profile.html';
-                    } else {
-                        alert('Error adding reveals. Please try again.');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('Error processing purchase. Please try again.');
+            const priceId = PADDLE_CONFIG.priceIds[packageType];
+            
+            if (!priceId || priceId === 'pri_XXXXX') {
+                alert('This package is not yet configured. Please contact support.');
+                return;
+            }
+            
+            // Open Paddle checkout
+            Paddle.Checkout.open({
+                items: [{
+                    priceId: priceId,
+                    quantity: 1
+                }],
+                customer: {
+                    email: user.email
+                },
+                customData: {
+                    userId: user.id,
+                    packageType: packageType
                 }
+            });
+        }
+        
+        // ==========================================
+        // PAYMENT SUCCESS HANDLER
+        // ==========================================
+        
+        async function handleSuccessfulPayment(data) {
+            console.log('Payment successful!', data);
+            
+            // Extract custom data
+            const customData = data.data?.custom_data || {};
+            const userId = customData.userId;
+            const planType = customData.planType;
+            const packageType = customData.packageType;
+            
+            // Show success message
+            alert('Payment successful! Your purchase will be activated shortly.');
+            
+            // Redirect to profile
+            window.location.href = 'profile.html';
+            
+            // NOTE: Reveals are NOT added here
+            // They will be added by Paddle webhook → backend → Supabase
+            // See next steps for webhook setup
+        }
+        
+        // ==========================================
+        // HELPER: Check if user is authenticated
+        // ==========================================
+        
+        async function checkAuth() {
+            try {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                return user;
+            } catch (error) {
+                console.error('Auth check error:', error);
+                return null;
             }
         }
     </script>
