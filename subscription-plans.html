@@ -355,31 +355,7 @@
                 Paddle.Initialize({
                     token: PADDLE_CONFIG.clientToken,
                     eventCallback: function(data) {
-                        // FORCE LOG EVERYTHING
-                        console.log('='.repeat(50));
-                        console.log('PADDLE EVENT:', data.name);
-                        console.log('FULL DATA:', data);
-                        
-                        try {
-                            console.log('AS JSON:', JSON.stringify(data, null, 2));
-                        } catch(e) {
-                            console.log('Could not stringify:', e);
-                        }
-                        console.log('='.repeat(50));
-                        
-                        if (data.name === 'checkout.error' || data.name.includes('error')) {
-                            console.error('🚨 ERROR EVENT DETECTED!');
-                            console.error('Event name:', data.name);
-                            console.error('Data object:', data);
-                            
-                            // Try multiple paths to find error
-                            if (data.data) console.error('data.data:', data.data);
-                            if (data.error) console.error('data.error:', data.error);
-                            if (data.detail) console.error('data.detail:', data.detail);
-                            if (data.message) console.error('data.message:', data.message);
-                            
-                            alert('Paddle Error - Check console for details');
-                        }
+                        console.log('🎯 Paddle event:', data.name);
                         
                         if (data.name === 'checkout.completed') {
                             handleSuccessfulPayment(data);
@@ -442,6 +418,10 @@
                     customData: {
                         userId: user.id,
                         planType: planType
+                    },
+                    settings: {
+                        successUrl: 'https://bizzstop.com/profile.html?payment=success',
+                        displayMode: 'overlay'
                     }
                 });
             } catch (error) {
@@ -487,6 +467,10 @@
                     customData: {
                         userId: user.id,
                         packageType: packageType
+                    },
+                    settings: {
+                        successUrl: 'https://bizzstop.com/profile.html?payment=success',
+                        displayMode: 'overlay'
                     }
                 });
             } catch (error) {
