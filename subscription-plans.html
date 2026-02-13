@@ -336,13 +336,11 @@
                 '5-reveals': 'pri_01khbar2pr436k88bh4hy59y4h',
                 '15-reveals': 'pri_01khbasdgdpxcn3xptk7g2zkfj',
                 '30-reveals': 'pri_01khbat7vyecw2t2wy03nwhyfc'
-            },
-            
-            sandbox: false
+            }
         };
         
         // ==========================================
-        // INITIALIZE PADDLE WITH ERROR HANDLING
+        // INITIALIZE PADDLE
         // ==========================================
         
         let paddleInitialized = false;
@@ -350,14 +348,12 @@
         function initializePaddle() {
             if (typeof Paddle === 'undefined') {
                 console.error('Paddle.js failed to load');
-                alert('Payment system unavailable. Please refresh the page or contact support.');
                 return false;
             }
             
             try {
                 Paddle.Initialize({
                     token: PADDLE_CONFIG.clientToken,
-                    environment: PADDLE_CONFIG.sandbox ? 'sandbox' : 'production',
                     eventCallback: function(data) {
                         console.log('Paddle event:', data);
                         
@@ -368,18 +364,17 @@
                 });
                 
                 paddleInitialized = true;
-                console.log('Paddle initialized successfully');
+                console.log('✅ Paddle initialized successfully');
                 return true;
             } catch (error) {
-                console.error('Paddle initialization error:', error);
-                alert('Payment system error. Please contact support.');
+                console.error('❌ Paddle initialization error:', error);
                 return false;
             }
         }
         
         // Initialize on page load
         window.addEventListener('load', function() {
-            setTimeout(initializePaddle, 1000); // Give Paddle.js time to load
+            setTimeout(initializePaddle, 1000);
         });
         
         // ==========================================
@@ -389,14 +384,12 @@
         async function subscribeToPlan(planType) {
             console.log('subscribeToPlan called with:', planType);
             
-            // Check Paddle
             if (!paddleInitialized) {
                 alert('Payment system is loading. Please wait a moment and try again.');
                 initializePaddle();
                 return;
             }
             
-            // Check auth
             const user = await checkAuth();
             if (!user) {
                 alert('Please login or create an account to subscribe');
@@ -429,21 +422,19 @@
                 });
             } catch (error) {
                 console.error('Paddle checkout error:', error);
-                alert('Error opening checkout. Please try again or contact support.');
+                alert('Error opening checkout: ' + error.message);
             }
         }
         
         async function buyReveals(packageType) {
             console.log('buyReveals called with:', packageType);
             
-            // Check Paddle
             if (!paddleInitialized) {
                 alert('Payment system is loading. Please wait a moment and try again.');
                 initializePaddle();
                 return;
             }
             
-            // Check auth
             const user = await checkAuth();
             if (!user) {
                 alert('Please login or create an account to purchase reveals');
@@ -476,7 +467,7 @@
                 });
             } catch (error) {
                 console.error('Paddle checkout error:', error);
-                alert('Error opening checkout. Please try again or contact support.');
+                alert('Error opening checkout: ' + error.message);
             }
         }
         
@@ -485,18 +476,15 @@
         // ==========================================
         
         async function handleSuccessfulPayment(data) {
-            console.log('Payment successful!', data);
-            
+            console.log('✅ Payment successful!', data);
             alert('Payment successful! Your purchase will be activated shortly.');
-            
-            // Redirect to profile
             setTimeout(function() {
                 window.location.href = 'profile.html';
             }, 2000);
         }
         
         // ==========================================
-        // HELPER: Check if user is authenticated
+        // HELPER: Check authentication
         // ==========================================
         
         async function checkAuth() {
@@ -514,10 +502,8 @@
             }
         }
         
-        // Debug: Log when page loads
-        console.log('Subscription page loaded');
+        console.log('📄 Subscription page loaded');
         console.log('Paddle available:', typeof Paddle !== 'undefined');
-        console.log('Supabase available:', typeof supabaseClient !== 'undefined');
     </script>
 </body>
 </html>
