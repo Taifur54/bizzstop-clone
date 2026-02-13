@@ -340,7 +340,7 @@
         };
         
         // ==========================================
-        // INITIALIZE PADDLE
+        // INITIALIZE PADDLE WITH DETAILED LOGGING
         // ==========================================
         
         let paddleInitialized = false;
@@ -355,7 +355,17 @@
                 Paddle.Initialize({
                     token: PADDLE_CONFIG.clientToken,
                     eventCallback: function(data) {
-                        console.log('Paddle event:', data);
+                        console.log('🎯 Paddle event:', data.name);
+                        console.log('📦 Event data:', data);
+                        
+                        // Log errors specifically
+                        if (data.name === 'checkout.error') {
+                            console.error('❌ Checkout error:', data);
+                            if (data.data && data.data.error) {
+                                console.error('Error details:', data.data.error);
+                                alert('Checkout error: ' + (data.data.error.detail || data.data.error.message || 'Unknown error'));
+                            }
+                        }
                         
                         if (data.name === 'checkout.completed') {
                             handleSuccessfulPayment(data);
@@ -382,7 +392,7 @@
         // ==========================================
         
         async function subscribeToPlan(planType) {
-            console.log('subscribeToPlan called with:', planType);
+            console.log('🛒 subscribeToPlan called with:', planType);
             
             if (!paddleInitialized) {
                 alert('Payment system is loading. Please wait a moment and try again.');
@@ -404,7 +414,22 @@
                 return;
             }
             
-            console.log('Opening Paddle checkout with price:', priceId);
+            console.log('👤 User email:', user.email);
+            console.log('💳 Opening Paddle checkout');
+            console.log('🏷️ Price ID:', priceId);
+            console.log('📋 Full config:', {
+                items: [{
+                    priceId: priceId,
+                    quantity: 1
+                }],
+                customer: {
+                    email: user.email
+                },
+                customData: {
+                    userId: user.id,
+                    planType: planType
+                }
+            });
             
             try {
                 Paddle.Checkout.open({
@@ -421,13 +446,15 @@
                     }
                 });
             } catch (error) {
-                console.error('Paddle checkout error:', error);
+                console.error('❌ Paddle checkout error:', error);
+                console.error('Error message:', error.message);
+                console.error('Error stack:', error.stack);
                 alert('Error opening checkout: ' + error.message);
             }
         }
         
         async function buyReveals(packageType) {
-            console.log('buyReveals called with:', packageType);
+            console.log('🛒 buyReveals called with:', packageType);
             
             if (!paddleInitialized) {
                 alert('Payment system is loading. Please wait a moment and try again.');
@@ -449,7 +476,9 @@
                 return;
             }
             
-            console.log('Opening Paddle checkout with price:', priceId);
+            console.log('👤 User email:', user.email);
+            console.log('💳 Opening Paddle checkout');
+            console.log('🏷️ Price ID:', priceId);
             
             try {
                 Paddle.Checkout.open({
@@ -466,7 +495,7 @@
                     }
                 });
             } catch (error) {
-                console.error('Paddle checkout error:', error);
+                console.error('❌ Paddle checkout error:', error);
                 alert('Error opening checkout: ' + error.message);
             }
         }
@@ -503,7 +532,7 @@
         }
         
         console.log('📄 Subscription page loaded');
-        console.log('Paddle available:', typeof Paddle !== 'undefined');
+        console.log('🌊 Paddle available:', typeof Paddle !== 'undefined');
     </script>
 </body>
 </html>
