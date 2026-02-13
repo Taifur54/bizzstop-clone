@@ -340,7 +340,7 @@
         };
         
         // ==========================================
-        // INITIALIZE PADDLE WITH DETAILED LOGGING
+        // INITIALIZE PADDLE
         // ==========================================
         
         let paddleInitialized = false;
@@ -355,16 +355,30 @@
                 Paddle.Initialize({
                     token: PADDLE_CONFIG.clientToken,
                     eventCallback: function(data) {
-                        console.log('🎯 Paddle event:', data.name);
-                        console.log('📦 Event data:', data);
+                        // FORCE LOG EVERYTHING
+                        console.log('='.repeat(50));
+                        console.log('PADDLE EVENT:', data.name);
+                        console.log('FULL DATA:', data);
                         
-                        // Log errors specifically
-                        if (data.name === 'checkout.error') {
-                            console.error('❌ Checkout error:', data);
-                            if (data.data && data.data.error) {
-                                console.error('Error details:', data.data.error);
-                                alert('Checkout error: ' + (data.data.error.detail || data.data.error.message || 'Unknown error'));
-                            }
+                        try {
+                            console.log('AS JSON:', JSON.stringify(data, null, 2));
+                        } catch(e) {
+                            console.log('Could not stringify:', e);
+                        }
+                        console.log('='.repeat(50));
+                        
+                        if (data.name === 'checkout.error' || data.name.includes('error')) {
+                            console.error('🚨 ERROR EVENT DETECTED!');
+                            console.error('Event name:', data.name);
+                            console.error('Data object:', data);
+                            
+                            // Try multiple paths to find error
+                            if (data.data) console.error('data.data:', data.data);
+                            if (data.error) console.error('data.error:', data.error);
+                            if (data.detail) console.error('data.detail:', data.detail);
+                            if (data.message) console.error('data.message:', data.message);
+                            
+                            alert('Paddle Error - Check console for details');
                         }
                         
                         if (data.name === 'checkout.completed') {
@@ -414,22 +428,7 @@
                 return;
             }
             
-            console.log('👤 User email:', user.email);
-            console.log('💳 Opening Paddle checkout');
-            console.log('🏷️ Price ID:', priceId);
-            console.log('📋 Full config:', {
-                items: [{
-                    priceId: priceId,
-                    quantity: 1
-                }],
-                customer: {
-                    email: user.email
-                },
-                customData: {
-                    userId: user.id,
-                    planType: planType
-                }
-            });
+            console.log('Opening checkout for price:', priceId);
             
             try {
                 Paddle.Checkout.open({
@@ -447,8 +446,6 @@
                 });
             } catch (error) {
                 console.error('❌ Paddle checkout error:', error);
-                console.error('Error message:', error.message);
-                console.error('Error stack:', error.stack);
                 alert('Error opening checkout: ' + error.message);
             }
         }
@@ -476,9 +473,7 @@
                 return;
             }
             
-            console.log('👤 User email:', user.email);
-            console.log('💳 Opening Paddle checkout');
-            console.log('🏷️ Price ID:', priceId);
+            console.log('Opening checkout for price:', priceId);
             
             try {
                 Paddle.Checkout.open({
