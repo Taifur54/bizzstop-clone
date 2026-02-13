@@ -6,7 +6,7 @@
     <title>Subscription Plans - BizzStop</title>
     <link rel="stylesheet" href="styles.css">
     
-    <!-- Paddle.js -->
+    <!-- Paddle.js - Load First -->
     <script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
     
     <style>
@@ -316,6 +316,7 @@
         </div>
     </div>
 
+    <!-- Load Supabase and Auth BEFORE Paddle script -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
     <script src="script.js"></script>
@@ -329,39 +330,73 @@
             clientToken: 'live_b11623814bbbd735d8bea052eb9',
             
             priceIds: {
-                'starter': 'pri_01khbaf078xx6vyzyjqyh5yn9x',      // $9/month Starter
-                'pro': 'pri_XXXXX',                                // Coming soon
-                'business': 'pri_XXXXX',                           // Coming soon
-                '5-reveals': 'pri_01khbar2pr436k88bh4hy59y4h',    // $5 one-time
-                '15-reveals': 'pri_01khbasdgdpxcn3xptk7g2zkfj',   // $12 one-time
-                '30-reveals': 'pri_01khbat7vyecw2t2wy03nwhyfc'    // $20 one-time
+                'starter': 'pri_01khbaf078xx6vyzyjqyh5yn9x',
+                'pro': 'pri_XXXXX',
+                'business': 'pri_XXXXX',
+                '5-reveals': 'pri_01khbar2pr436k88bh4hy59y4h',
+                '15-reveals': 'pri_01khbasdgdpxcn3xptk7g2zkfj',
+                '30-reveals': 'pri_01khbat7vyecw2t2wy03nwhyfc'
             },
             
-            sandbox: false  // Live mode
+            sandbox: false
         };
         
-        // Initialize Paddle
-        if (typeof Paddle !== 'undefined') {
-            Paddle.Initialize({
-                token: PADDLE_CONFIG.clientToken,
-                environment: PADDLE_CONFIG.sandbox ? 'sandbox' : 'production',
-                eventCallback: function(data) {
-                    console.log('Paddle event:', data);
-                    
-                    // Handle successful payment
-                    if (data.name === 'checkout.completed') {
-                        handleSuccessfulPayment(data);
+        // ==========================================
+        // INITIALIZE PADDLE WITH ERROR HANDLING
+        // ==========================================
+        
+        let paddleInitialized = false;
+        
+        function initializePaddle() {
+            if (typeof Paddle === 'undefined') {
+                console.error('Paddle.js failed to load');
+                alert('Payment system unavailable. Please refresh the page or contact support.');
+                return false;
+            }
+            
+            try {
+                Paddle.Initialize({
+                    token: PADDLE_CONFIG.clientToken,
+                    environment: PADDLE_CONFIG.sandbox ? 'sandbox' : 'production',
+                    eventCallback: function(data) {
+                        console.log('Paddle event:', data);
+                        
+                        if (data.name === 'checkout.completed') {
+                            handleSuccessfulPayment(data);
+                        }
                     }
-                }
-            });
+                });
+                
+                paddleInitialized = true;
+                console.log('Paddle initialized successfully');
+                return true;
+            } catch (error) {
+                console.error('Paddle initialization error:', error);
+                alert('Payment system error. Please contact support.');
+                return false;
+            }
         }
+        
+        // Initialize on page load
+        window.addEventListener('load', function() {
+            setTimeout(initializePaddle, 1000); // Give Paddle.js time to load
+        });
         
         // ==========================================
         // SUBSCRIPTION PURCHASE FUNCTIONS
         // ==========================================
         
         async function subscribeToPlan(planType) {
-            // Check if user is logged in
+            console.log('subscribeToPlan called with:', planType);
+            
+            // Check Paddle
+            if (!paddleInitialized) {
+                alert('Payment system is loading. Please wait a moment and try again.');
+                initializePaddle();
+                return;
+            }
+            
+            // Check auth
             const user = await checkAuth();
             if (!user) {
                 alert('Please login or create an account to subscribe');
@@ -372,28 +407,43 @@
             const priceId = PADDLE_CONFIG.priceIds[planType];
             
             if (!priceId || priceId === 'pri_XXXXX') {
-                alert('This plan is not yet configured. Please contact support.');
+                alert('This plan is not yet available. Please contact support.');
                 return;
             }
             
-            // Open Paddle checkout
-            Paddle.Checkout.open({
-                items: [{
-                    priceId: priceId,
-                    quantity: 1
-                }],
-                customer: {
-                    email: user.email
-                },
-                customData: {
-                    userId: user.id,
-                    planType: planType
-                }
-            });
+            console.log('Opening Paddle checkout with price:', priceId);
+            
+            try {
+                Paddle.Checkout.open({
+                    items: [{
+                        priceId: priceId,
+                        quantity: 1
+                    }],
+                    customer: {
+                        email: user.email
+                    },
+                    customData: {
+                        userId: user.id,
+                        planType: planType
+                    }
+                });
+            } catch (error) {
+                console.error('Paddle checkout error:', error);
+                alert('Error opening checkout. Please try again or contact support.');
+            }
         }
         
         async function buyReveals(packageType) {
-            // Check if user is logged in
+            console.log('buyReveals called with:', packageType);
+            
+            // Check Paddle
+            if (!paddleInitialized) {
+                alert('Payment system is loading. Please wait a moment and try again.');
+                initializePaddle();
+                return;
+            }
+            
+            // Check auth
             const user = await checkAuth();
             if (!user) {
                 alert('Please login or create an account to purchase reveals');
@@ -404,24 +454,30 @@
             const priceId = PADDLE_CONFIG.priceIds[packageType];
             
             if (!priceId || priceId === 'pri_XXXXX') {
-                alert('This package is not yet configured. Please contact support.');
+                alert('This package is not yet available. Please contact support.');
                 return;
             }
             
-            // Open Paddle checkout
-            Paddle.Checkout.open({
-                items: [{
-                    priceId: priceId,
-                    quantity: 1
-                }],
-                customer: {
-                    email: user.email
-                },
-                customData: {
-                    userId: user.id,
-                    packageType: packageType
-                }
-            });
+            console.log('Opening Paddle checkout with price:', priceId);
+            
+            try {
+                Paddle.Checkout.open({
+                    items: [{
+                        priceId: priceId,
+                        quantity: 1
+                    }],
+                    customer: {
+                        email: user.email
+                    },
+                    customData: {
+                        userId: user.id,
+                        packageType: packageType
+                    }
+                });
+            } catch (error) {
+                console.error('Paddle checkout error:', error);
+                alert('Error opening checkout. Please try again or contact support.');
+            }
         }
         
         // ==========================================
@@ -431,21 +487,12 @@
         async function handleSuccessfulPayment(data) {
             console.log('Payment successful!', data);
             
-            // Extract custom data
-            const customData = data.data?.custom_data || {};
-            const userId = customData.userId;
-            const planType = customData.planType;
-            const packageType = customData.packageType;
-            
-            // Show success message
             alert('Payment successful! Your purchase will be activated shortly.');
             
             // Redirect to profile
-            window.location.href = 'profile.html';
-            
-            // NOTE: Reveals are NOT added here
-            // They will be added by Paddle webhook → backend → Supabase
-            // See next steps for webhook setup
+            setTimeout(function() {
+                window.location.href = 'profile.html';
+            }, 2000);
         }
         
         // ==========================================
@@ -454,6 +501,11 @@
         
         async function checkAuth() {
             try {
+                if (typeof supabaseClient === 'undefined') {
+                    console.error('Supabase client not loaded');
+                    return null;
+                }
+                
                 const { data: { user } } = await supabaseClient.auth.getUser();
                 return user;
             } catch (error) {
@@ -461,6 +513,11 @@
                 return null;
             }
         }
+        
+        // Debug: Log when page loads
+        console.log('Subscription page loaded');
+        console.log('Paddle available:', typeof Paddle !== 'undefined');
+        console.log('Supabase available:', typeof supabaseClient !== 'undefined');
     </script>
 </body>
 </html>
