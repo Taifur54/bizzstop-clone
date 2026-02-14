@@ -368,11 +368,11 @@
             // Read and preview image
             const reader = new FileReader();
             reader.onload = (e) => {
-                const previewDiv = document.querySelector(`.image-preview[data-index="${index}"]`);
+                const previewDiv = document.querySelector(\`.image-preview[data-index="\${index}"]\`);
                 previewDiv.classList.add('has-image');
                 
                 const placeholder = previewDiv.querySelector('.image-preview-placeholder');
-                placeholder.innerHTML = `<img src="${e.target.result}" alt="Preview ${index + 1}">`;
+                placeholder.innerHTML = \`<img src="\${e.target.result}" alt="Preview \${index + 1}">\`;
                 
                 // Store the file
                 uploadedImages[index] = file;
@@ -384,7 +384,7 @@
         function removeImage(index) {
             uploadedImages[index] = null;
             
-            const previewDiv = document.querySelector(`.image-preview[data-index="${index}"]`);
+            const previewDiv = document.querySelector(\`.image-preview[data-index="\${index}"]\`);
             previewDiv.classList.remove('has-image');
             
             const placeholder = previewDiv.querySelector('.image-preview-placeholder');
@@ -405,18 +405,18 @@
                 try {
                     // Generate unique filename
                     const fileExt = file.name.split('.').pop();
-                    const fileName = `${currentUser.id}/${Date.now()}_${i}.${fileExt}`;
+                    const fileName = \`\${currentUser.id}/\${Date.now()}_\${i}.\${fileExt}\`;
                     
                     // Upload to Supabase Storage
                     const { data, error } = await supabaseClient.storage
-                        .from('business-images')
+                        .from('idea-images')
                         .upload(fileName, file);
                     
                     if (error) throw error;
                     
                     // Get public URL
                     const { data: urlData } = supabaseClient.storage
-                        .from('business-images')
+                        .from('idea-images')
                         .getPublicUrl(fileName);
                     
                     imageUrls.push(urlData.publicUrl);
