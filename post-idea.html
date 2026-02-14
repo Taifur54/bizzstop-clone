@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ad Details - BizzStop</title>
+    <title>Post Your Business Idea - BizzStop</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .details-container {
-            max-width: 1000px;
+        .form-container {
+            max-width: 800px;
             margin: 60px auto;
             padding: 20px;
         }
-        .details-hero {
+        .form-hero {
             background: linear-gradient(135deg, #8a728c 0%, #6f5a70 100%);
             color: white;
             padding: 40px;
@@ -19,165 +19,109 @@
             margin-bottom: 30px;
             text-align: center;
         }
-        .details-hero h1 {
+        .form-hero h1 {
             font-size: 32px;
             margin-bottom: 10px;
         }
-        .details-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 30px;
-        }
-        .main-content {
+        .form-card {
             background: white;
-            padding: 30px;
+            padding: 40px;
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .form-group {
+            margin-bottom: 25px;
         }
-        .info-card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .info-card h3 {
-            color: #8a728c;
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-        .info-item {
-            padding: 10px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .info-item:last-child {
-            border-bottom: none;
-        }
-        .info-label {
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: 600;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        .image-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        .gallery-image {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        .gallery-image:hover {
-            transform: scale(1.05);
-        }
-        .main-image {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 25px;
-        }
-        .section {
-            margin-bottom: 30px;
-        }
-        .section h2 {
             color: #333;
-            margin-bottom: 15px;
-            font-size: 24px;
         }
-        .section p {
-            color: #555;
-            line-height: 1.8;
-            white-space: pre-wrap;
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.3s;
         }
-        .category-badge {
-            display: inline-block;
-            padding: 6px 15px;
-            background: #8a728c;
-            color: white;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-right: 10px;
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #8a728c;
         }
-        .location-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        .form-group small {
+            display: block;
+            margin-top: 5px;
             color: #666;
-            font-size: 16px;
+            font-size: 13px;
         }
-        .contact-section {
-            background: #f8f7f9;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .contact-hidden p {
-            margin-bottom: 15px;
-            color: #666;
-        }
-        .reveal-btn {
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
             background: #8a728c;
             color: white;
             border: none;
-            padding: 12px 30px;
             border-radius: 6px;
+            font-size: 18px;
             font-weight: bold;
-            font-size: 16px;
             cursor: pointer;
             transition: background 0.3s;
         }
-        .reveal-btn:hover {
+        .submit-btn:hover {
             background: #6f5a70;
         }
-        .reveal-btn:disabled {
+        .submit-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
-        .contact-revealed {
-            text-align: left;
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
         }
-        .contact-revealed .info-item {
+        .success-actions {
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 0;
+            gap: 15px;
+            margin-top: 15px;
         }
-        .no-reveals {
-            color: #dc3545;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-        .back-btn {
-            display: inline-block;
+        .success-actions button,
+        .success-actions a {
             padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-size: 15px;
+        }
+        .btn-primary {
+            background: #8a728c;
+            color: white;
+        }
+        .btn-secondary {
             background: #f0f0f0;
             color: #333;
-            text-decoration: none;
+        }
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
             border-radius: 6px;
             margin-bottom: 20px;
-            transition: background 0.3s;
-        }
-        .back-btn:hover {
-            background: #e0e0e0;
-        }
-        @media (max-width: 768px) {
-            .details-content {
-                grid-template-columns: 1fr;
-            }
-            .main-image {
-                height: 250px;
-            }
+            display: none;
         }
     </style>
 </head>
@@ -206,264 +150,191 @@
         </div>
     </nav>
 
-    <div class="details-container">
-        <a href="browse-opportunities.html" class="back-btn">← Back to Opportunities</a>
-        
-        <div class="details-hero">
-            <h1 id="ideaTitle">Loading...</h1>
+    <div class="form-container">
+        <div class="form-hero">
+            <h1>Post Your Business Idea</h1>
+            <p>Share your vision and find the perfect partner</p>
         </div>
 
-        <div class="details-content">
-            <div class="main-content">
-                <div id="imageSection"></div>
-                
-                <div class="section">
-                    <h2>Details</h2>
-                    <p id="ideaDescription"></p>
-                </div>
-
-                <div class="section">
-                    <h2>What I'm Looking For</h2>
-                    <p id="ideaLookingFor"></p>
-                </div>
+        <div id="successMessage" class="success-message">
+            <strong>✅ Success!</strong> Your business idea has been posted successfully!
+            <div class="success-actions">
+                <button class="btn-primary" onclick="resetForm()">Post Another Idea</button>
+                <a href="browse-opportunities.html" class="btn-secondary">Browse Opportunities</a>
             </div>
+        </div>
 
-            <div class="sidebar">
-                <div class="info-card">
-                    <h3>Ad Details</h3>
-                    <div class="info-item">
-                        <div class="info-label">Category</div>
-                        <span id="ideaCategory"></span>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Location</div>
-                        <span id="ideaLocation"></span>
-                    </div>
-                    <div class="info-item">
-                        <div class="info-label">Posted</div>
-                        <span id="ideaPosted"></span>
-                    </div>
+        <div id="errorMessage" class="error-message"></div>
+
+        <div class="form-card">
+            <form id="businessIdeaForm">
+                <div class="form-group">
+                    <label for="title">Business Title *</label>
+                    <input type="text" id="title" required maxlength="100">
+                    <small>Give your business idea a catchy name</small>
                 </div>
 
-                <div class="info-card">
-                    <h3>Contact</h3>
-                    <div id="contactSection" class="contact-section"></div>
+                <div class="form-group">
+                    <label for="category">Category *</label>
+                    <select id="category" required>
+                        <option value="">Select a category</option>
+                        <option value="Food & Beverage">Food & Beverage</option>
+                        <option value="Technology">Technology</option>
+                        <option value="E-commerce">E-commerce</option>
+                        <option value="Services">Services</option>
+                        <option value="Retail">Retail</option>
+                        <option value="Health & Fitness">Health & Fitness</option>
+                        <option value="Education">Education</option>
+                        <option value="Real Estate">Real Estate</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <label for="location">Location *</label>
+                    <input type="text" id="location" required placeholder="City, State">
+                    <small>Where will this business operate?</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" required maxlength="2000"></textarea>
+                    <small>Describe your business idea in detail</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="lookingFor">What I'm Looking For *</label>
+                    <textarea id="lookingFor" required maxlength="1000"></textarea>
+                    <small>What kind of partner or skills are you seeking?</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactEmail">Contact Email *</label>
+                    <input type="email" id="contactEmail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactPhone">Contact Phone *</label>
+                    <input type="tel" id="contactPhone" required>
+                    <small>This will be hidden until someone uses a reveal credit</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="imageUrl">Image URL (Optional)</label>
+                    <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
+                    <small>Add an image URL to make your post stand out</small>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    Post My Business Idea
+                </button>
+            </form>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="auth.js"></script>
+    <script src="script.js"></script>
     <script>
-        let currentIdea = null;
         let currentUser = null;
-        let userProfile = null;
 
-        // Get idea ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const ideaId = urlParams.get('id');
-
-        if (!ideaId) {
-            window.location.href = 'browse-opportunities.html';
-        }
-
-        // Load idea details
-        async function loadIdeaDetails() {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('business_ideas')
-                    .select('*')
-                    .eq('id', ideaId)
-                    .single();
-
-                if (error) throw error;
-
-                currentIdea = data;
-                displayIdeaDetails(data);
-            } catch (error) {
-                console.error('Error loading idea:', error);
-                alert('Error loading idea details');
-                window.location.href = 'browse-opportunities.html';
-            }
-        }
-
-        // Display idea details
-        function displayIdeaDetails(idea) {
-            document.getElementById('ideaTitle').textContent = idea.title;
-            document.getElementById('ideaDescription').textContent = idea.description;
-            document.getElementById('ideaLookingFor').textContent = idea.looking_for;
-            document.getElementById('ideaCategory').innerHTML = `<span class="category-badge">${idea.category}</span>`;
-            document.getElementById('ideaLocation').innerHTML = `<span class="location-badge">📍 ${idea.location}</span>`;
-            
-            // Format date
-            const posted = new Date(idea.created_at).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-            document.getElementById('ideaPosted').textContent = posted;
-
-            // Display images
-            displayImages(idea.image_urls);
-
-            // Check if contact already revealed
-            checkContactRevealed(idea.id);
-        }
-
-        // Display images
-        function displayImages(imageUrls) {
-            const imageSection = document.getElementById('imageSection');
-            
-            if (!imageUrls || imageUrls.length === 0) {
-                imageSection.innerHTML = '<img src="https://via.placeholder.com/800x400?text=No+Image" class="main-image">';
-                return;
-            }
-
-            if (imageUrls.length === 1) {
-                imageSection.innerHTML = `<img src="${imageUrls[0]}" class="main-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+Not+Found'">`;
-            } else {
-                const mainImage = imageUrls[0];
-                const thumbnails = imageUrls.slice(1);
-                
-                imageSection.innerHTML = `
-                    <img src="${mainImage}" id="mainImage" class="main-image" onerror="this.src='https://via.placeholder.com/800x400?text=Image+Not+Found'">
-                    <div class="image-gallery">
-                        ${imageUrls.map((url, index) => `
-                            <img src="${url}" class="gallery-image" onclick="changeMainImage('${url}')" onerror="this.src='https://via.placeholder.com/150?text=Error'">
-                        `).join('')}
-                    </div>
-                `;
-            }
-        }
-
-        // Change main image
-        window.changeMainImage = function(url) {
-            document.getElementById('mainImage').src = url;
-        };
-
-        // Check if contact already revealed
-        async function checkContactRevealed(ideaId) {
-            const contactSection = document.getElementById('contactSection');
-
+        // Check if user is logged in
+        async function init() {
+            currentUser = await checkAuth();
             if (!currentUser) {
-                contactSection.innerHTML = `
-                    <div class="contact-hidden">
-                        <p>📞 Contact information is hidden</p>
-                        <p>Please <a href="sign-uplogin.html">login</a> to reveal contact details</p>
-                    </div>
-                `;
-                return;
-            }
-
-            try {
-                const { data, error } = await supabaseClient
-                    .from('contact_reveals')
-                    .select('*')
-                    .eq('user_id', currentUser.id)
-                    .eq('business_idea_id', ideaId)
-                    .single();
-
-                if (data) {
-                    // Already revealed
-                    displayRevealedContact();
-                } else {
-                    // Not revealed yet
-                    displayHiddenContact();
-                }
-            } catch (error) {
-                // Not revealed
-                displayHiddenContact();
-            }
-        }
-
-        // Display hidden contact
-        function displayHiddenContact() {
-            const contactSection = document.getElementById('contactSection');
-            contactSection.innerHTML = `
-                <div class="contact-hidden">
-                    <p>📞 Contact information is hidden</p>
-                    <button class="reveal-btn" onclick="revealContact()">
-                        Reveal Contact (1 Credit)
-                    </button>
-                    <p class="no-reveals" id="noRevealsMsg" style="display: none;">
-                        You need more reveals. <a href="subscription-plans.html">Buy more</a>
-                    </p>
-                </div>
-            `;
-        }
-
-        // Display revealed contact
-        function displayRevealedContact() {
-            const contactSection = document.getElementById('contactSection');
-            contactSection.innerHTML = `
-                <div class="contact-revealed">
-                    <div class="info-item">
-                        <strong>📧 Email:</strong>
-                        <a href="mailto:${currentIdea.contact_email}">${currentIdea.contact_email}</a>
-                    </div>
-                    <div class="info-item">
-                        <strong>📞 Phone:</strong>
-                        <a href="tel:${currentIdea.contact_phone}">${currentIdea.contact_phone}</a>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Reveal contact
-        window.revealContact = async function() {
-            if (!currentUser) {
-                alert('Please login to reveal contact information');
+                alert('Please login to post a business idea');
                 window.location.href = 'sign-uplogin.html';
                 return;
             }
 
-            if (!userProfile || userProfile.reveals_remaining <= 0) {
-                document.getElementById('noRevealsMsg').style.display = 'block';
-                return;
-            }
+            // Pre-fill email if available
+            document.getElementById('contactEmail').value = currentUser.email || '';
+        }
+
+        // Handle form submission
+        document.getElementById('businessIdeaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+
+            // Hide messages
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Posting...';
 
             try {
-                // Deduct reveal
-                const newReveals = userProfile.reveals_remaining - 1;
-                const updated = await updateReveals(currentUser.id, newReveals);
-                
-                if (!updated) {
-                    throw new Error('Failed to update reveals');
-                }
+                // Get form data
+                const title = document.getElementById('title').value.trim();
+                const category = document.getElementById('category').value;
+                const location = document.getElementById('location').value.trim();
+                const description = document.getElementById('description').value.trim();
+                const lookingFor = document.getElementById('lookingFor').value.trim();
+                const contactEmail = document.getElementById('contactEmail').value.trim();
+                const contactPhone = document.getElementById('contactPhone').value.trim();
+                const imageUrl = document.getElementById('imageUrl').value.trim();
 
-                // Update local profile
-                userProfile.reveals_remaining = newReveals;
+                // Prepare image URLs array
+                const imageUrls = imageUrl ? [imageUrl] : [];
 
-                // Log the reveal
-                await supabaseClient
-                    .from('contact_reveals')
+                // Insert into database
+                const { data, error } = await supabaseClient
+                    .from('business_ideas')
                     .insert([{
                         user_id: currentUser.id,
-                        business_idea_id: ideaId,
-                        revealed_at: new Date().toISOString()
+                        title: title,
+                        category: category,
+                        location: location,
+                        description: description,
+                        looking_for: lookingFor,
+                        contact_email: contactEmail,
+                        contact_phone: contactPhone,
+                        image_urls: imageUrls,
+                        status: 'active'
                     }]);
 
-                // Display contact
-                displayRevealedContact();
+                if (error) throw error;
 
-                // Reload user status
-                loadUserStatus();
+                // Show success message
+                successMsg.style.display = 'block';
+                
+                // Scroll to success message
+                successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
             } catch (error) {
-                console.error('Error revealing contact:', error);
-                alert('Error revealing contact. Please try again.');
+                console.error('Error posting idea:', error);
+                errorMsg.textContent = 'Error posting your idea: ' + error.message;
+                errorMsg.style.display = 'block';
+                errorMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Post My Business Idea';
             }
+        });
+
+        // Reset form for another post
+        window.resetForm = function() {
+            document.getElementById('businessIdeaForm').reset();
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('submitBtn').disabled = false;
+            document.getElementById('submitBtn').textContent = 'Post My Business Idea';
+            
+            // Pre-fill email again
+            document.getElementById('contactEmail').value = currentUser.email || '';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Initialize page
-        (async function() {
-            currentUser = await checkAuth();
-            if (currentUser) {
-                userProfile = await getUserProfile(currentUser.id);
-            }
-            await loadIdeaDetails();
-        })();
+        // Initialize on page load
+        init();
     </script>
 </body>
 </html>
