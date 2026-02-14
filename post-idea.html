@@ -65,6 +65,60 @@
             color: #666;
             font-size: 13px;
         }
+        
+        /* Image upload styles */
+        .image-upload-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .image-preview {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+            overflow: hidden;
+        }
+        .image-preview:hover {
+            border-color: #8a728c;
+        }
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-preview-placeholder {
+            text-align: center;
+            color: #999;
+        }
+        .image-preview-remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            display: none;
+        }
+        .image-preview.has-image .image-preview-remove {
+            display: block;
+        }
+        .image-preview input[type="file"] {
+            display: none;
+        }
+        
         .submit-btn {
             width: 100%;
             padding: 15px;
@@ -212,18 +266,21 @@
                 <div class="form-group">
                     <label for="contactEmail">Contact Email *</label>
                     <input type="email" id="contactEmail" required>
+                    <small>⚠️ Will be hidden until someone uses a reveal credit</small>
                 </div>
 
                 <div class="form-group">
                     <label for="contactPhone">Contact Phone *</label>
                     <input type="tel" id="contactPhone" required>
-                    <small>This will be hidden until someone uses a reveal credit</small>
+                    <small>⚠️ Will be hidden until someone uses a reveal credit</small>
                 </div>
 
                 <div class="form-group">
-                    <label for="imageUrl">Image URL (Optional)</label>
-                    <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg">
-                    <small>Add an image URL to make your post stand out</small>
+                    <label>Images (Optional - Up to 4)</label>
+                    <div class="image-upload-container" id="imageUploadContainer">
+                        <!-- Image previews will be generated here -->
+                    </div>
+                    <small>Click on a box to upload an image (JPG, PNG, max 5MB each)</small>
                 </div>
 
                 <button type="submit" class="submit-btn" id="submitBtn">
@@ -238,6 +295,8 @@
     <script src="script.js"></script>
     <script>
         let currentUser = null;
+        const uploadedImages = [];
+        const MAX_IMAGES = 4;
 
         // Check if user is logged in
         async function init() {
@@ -250,6 +309,124 @@
 
             // Pre-fill email if available
             document.getElementById('contactEmail').value = currentUser.email || '';
+            
+            // Initialize image upload boxes
+            initializeImageUpload();
+        }
+
+        // Initialize image upload interface
+        function initializeImageUpload() {
+            const container = document.getElementById('imageUploadContainer');
+            container.innerHTML = '';
+            
+            for (let i = 0; i < MAX_IMAGES; i++) {
+                const previewDiv = document.createElement('div');
+                previewDiv.className = 'image-preview';
+                previewDiv.dataset.index = i;
+                
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/jpeg,image/png,image/jpg';
+                input.onchange = (e) => handleImageSelect(e, i);
+                
+                const placeholder = document.createElement('div');
+                placeholder.className = 'image-preview-placeholder';
+                placeholder.innerHTML = '📷<br>Add Image';
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'image-preview-remove';
+                removeBtn.innerHTML = '×';
+                removeBtn.type = 'button';
+                removeBtn.onclick = () => removeImage(i);
+                
+                previewDiv.appendChild(input);
+                previewDiv.appendChild(placeholder);
+                previewDiv.appendChild(removeBtn);
+                previewDiv.onclick = () => input.click();
+                
+                container.appendChild(previewDiv);
+            }
+        }
+
+        // Handle image selection
+        function handleImageSelect(event, index) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // Validate file size (5MB max)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image must be less than 5MB');
+                return;
+            }
+            
+            // Validate file type
+            if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+                alert('Only JPG and PNG images are allowed');
+                return;
+            }
+            
+            // Read and preview image
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const previewDiv = document.querySelector(`.image-preview[data-index="${index}"]`);
+                previewDiv.classList.add('has-image');
+                
+                const placeholder = previewDiv.querySelector('.image-preview-placeholder');
+                placeholder.innerHTML = `<img src="${e.target.result}" alt="Preview ${index + 1}">`;
+                
+                // Store the file
+                uploadedImages[index] = file;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Remove image
+        function removeImage(index) {
+            uploadedImages[index] = null;
+            
+            const previewDiv = document.querySelector(`.image-preview[data-index="${index}"]`);
+            previewDiv.classList.remove('has-image');
+            
+            const placeholder = previewDiv.querySelector('.image-preview-placeholder');
+            placeholder.innerHTML = '📷<br>Add Image';
+            
+            const input = previewDiv.querySelector('input[type="file"]');
+            input.value = '';
+        }
+
+        // Upload images to Supabase Storage
+        async function uploadImagesToStorage(images) {
+            const imageUrls = [];
+            
+            for (let i = 0; i < images.length; i++) {
+                const file = images[i];
+                if (!file) continue;
+                
+                try {
+                    // Generate unique filename
+                    const fileExt = file.name.split('.').pop();
+                    const fileName = `${currentUser.id}/${Date.now()}_${i}.${fileExt}`;
+                    
+                    // Upload to Supabase Storage
+                    const { data, error } = await supabaseClient.storage
+                        .from('business-images')
+                        .upload(fileName, file);
+                    
+                    if (error) throw error;
+                    
+                    // Get public URL
+                    const { data: urlData } = supabaseClient.storage
+                        .from('business-images')
+                        .getPublicUrl(fileName);
+                    
+                    imageUrls.push(urlData.publicUrl);
+                } catch (error) {
+                    console.error('Error uploading image:', error);
+                    // Continue with other images even if one fails
+                }
+            }
+            
+            return imageUrls;
         }
 
         // Handle form submission
@@ -266,7 +443,7 @@
 
             // Disable button
             submitBtn.disabled = true;
-            submitBtn.textContent = 'Posting...';
+            submitBtn.textContent = 'Uploading...';
 
             try {
                 // Get form data
@@ -277,10 +454,12 @@
                 const lookingFor = document.getElementById('lookingFor').value.trim();
                 const contactEmail = document.getElementById('contactEmail').value.trim();
                 const contactPhone = document.getElementById('contactPhone').value.trim();
-                const imageUrl = document.getElementById('imageUrl').value.trim();
 
-                // Prepare image URLs array
-                const imageUrls = imageUrl ? [imageUrl] : [];
+                // Upload images
+                const imageUrls = await uploadImagesToStorage(uploadedImages);
+
+                // Update button text
+                submitBtn.textContent = 'Posting...';
 
                 // Insert into database
                 const { data, error } = await supabaseClient
@@ -325,6 +504,10 @@
             document.getElementById('errorMessage').style.display = 'none';
             document.getElementById('submitBtn').disabled = false;
             document.getElementById('submitBtn').textContent = 'Post My Business Idea';
+            
+            // Reset images
+            uploadedImages.length = 0;
+            initializeImageUpload();
             
             // Pre-fill email again
             document.getElementById('contactEmail').value = currentUser.email || '';
